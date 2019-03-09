@@ -10,7 +10,7 @@ namespace DataModel
     {
         
         private readonly Dictionary<AbstractUser, List<IData>> _data;
-
+        
         
         public DataManager()
         {
@@ -67,8 +67,6 @@ namespace DataModel
         private void SaveData()
         {
             //todo
-        }
-        
-        
+        }                
     }
 }
