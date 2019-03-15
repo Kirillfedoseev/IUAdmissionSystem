@@ -17,10 +17,19 @@ namespace DataModel
         /// <param name="login">login of the user (email)</param>
         /// <param name="password">password of the user (not encrypted)</param>
         /// <returns>auth token for the user</returns>
-        public static string AuthUser(string login, string password)
+        public static TokenData AuthUser(string login, string password)
         {
-            IData data;
-            return "osfjsngjksngjsrngjrmgrgrinrinerig"; //todo return auth token
+            //IData data;
+            //return "osfjsngjksngjsrngjrmgrgrinrinerig"; //todo return auth token
+
+            //TODO: Check that solution
+            var tokenData = new TokenData
+            {
+                token = "osfjsngjksngjsrngjrmgrgrinrinerig"
+            };
+
+            return tokenData;
+
         }
 
         
@@ -31,9 +40,15 @@ namespace DataModel
         /// <param name="login"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static string RegisterUser(string login, string password, RootEnum[] roots)
+        public static TokenData RegisterUser(string login, string password, RootEnum[] roots)
         {
-            return "osfjsngjksngjsrngjrmgrgrinrinerig";
+            //TODO: Check that solution
+            var tokenData = new TokenData
+            {
+                token = "osfjsngjksngjsrngjrmgrgrinrinerig"
+            };
+
+            return tokenData;
         }
         
         
