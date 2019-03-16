@@ -30,12 +30,13 @@
         /// <returns>JSON formatted instance</returns>
         string SerializeToJSON();
 
-        
+
         /// <summary>
         /// Desirialize JSON object to IData instance
         /// </summary>
+        /// <param name="json">passsed json object as string </param>
         /// <returns>IData instance</returns>
-        IData DeserializeFromJSON();
+        IData DeserializeFromJSON(string json);
         
         
 

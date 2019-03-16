@@ -31,7 +31,7 @@ namespace DataModel.Tests.TestItems
             throw new System.NotImplementedException();
         }
 
-        public IData DeserializeFromJSON()
+        public IData DeserializeFromJSON(string json)
         {
             throw new System.NotImplementedException();
         }

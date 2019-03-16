@@ -38,6 +38,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>packages\Newtonsoft.Json.12.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -50,9 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AuthManager.cs" />
-    <Compile Include="DataManager.cs" />
-    <Compile Include="Data\AuthData.cs" />
+    <Compile Include="Authentication\AuthData.cs" />
+    <Compile Include="Authentication\AuthExceptions.cs" />
+    <Compile Include="Authentication\AuthManager.cs" />
+    <Compile Include="Authentication\TokensRegister.cs" />
+    <Compile Include="Data\DataCollector.cs" />
+    <Compile Include="Data\DataFacade.cs" />
     <Compile Include="Data\IData.cs" />
     <Compile Include="Data\RegistrationData.cs" />
     <Compile Include="Data\TokenData.cs" />
@@ -60,12 +66,14 @@
     <Compile Include="Programs\AbstractProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\Singletone.cs" />
-    <Compile Include="TestsManager.cs" />
     <Compile Include="Tests\Test.cs" />
     <Compile Include="Tests\ITestable.cs" />
     <Compile Include="Tests\TestItems\SimpleTestItem.cs" />
+    <Compile Include="Tests\TestsManager.cs" />
     <Compile Include="Users\AbstractUser.cs" />
     <Compile Include="Users\Root.cs" />
+    <Compile Include="Users\TestUser.cs" />
+    <Compile Include="Users\UserProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
