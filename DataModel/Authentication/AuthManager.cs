@@ -11,8 +11,9 @@ namespace DataModel.Authentication
         private Dictionary<AuthData, AbstractUser> _usersAuthData;
 
         private TokensRegister _register;
-
         
+        public AbstractUser this[string authToken] => _register.ValidateAuthToken(authToken);
+
         public AuthManager()
         {
             _register = new TokensRegister();

@@ -57,7 +57,8 @@
     <Compile Include="Authentication\AuthExceptions.cs" />
     <Compile Include="Authentication\AuthManager.cs" />
     <Compile Include="Authentication\TokensRegister.cs" />
-    <Compile Include="Data\DataManager.cs" />
+    <Compile Include="Data\DataCollector.cs" />
+    <Compile Include="Data\DataFacade.cs" />
     <Compile Include="Data\IData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Programs\AbstractProgram.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="Users\AbstractUser.cs" />
     <Compile Include="Users\Root.cs" />
     <Compile Include="Users\TestUser.cs" />
+    <Compile Include="Users\UserProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

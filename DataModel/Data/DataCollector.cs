@@ -5,13 +5,13 @@ using DataModel.Users;
 
 namespace DataModel.Data
 {
-    public class DataManager:Singletone<DataManager>
+    public class DataCollector:Singletone<DataCollector>
     {
         
         private readonly Dictionary<AbstractUser, List<IData>> _data;
         
         
-        public DataManager()
+        public DataCollector()
         {
             _data = LoadData() ?? new Dictionary<AbstractUser, List<IData>>();
         }
