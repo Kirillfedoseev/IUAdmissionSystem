@@ -58,7 +58,7 @@
     <Compile Include="Authentication\AuthManager.cs" />
     <Compile Include="Authentication\TokensRegister.cs" />
     <Compile Include="Data\DataCollector.cs" />
-    <Compile Include="Data\DataFacade.cs" />
+    <Compile Include="Data\DataModelFacade.cs" />
     <Compile Include="Data\IData.cs" />
     <Compile Include="Data\RegistrationData.cs" />
     <Compile Include="Data\TokenData.cs" />
