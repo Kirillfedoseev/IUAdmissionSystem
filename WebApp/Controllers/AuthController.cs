@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DataModel;
+using DataModel.Authentication;
 using DataModel.Data;
 using DataModel.Users;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+
 
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -36,20 +38,27 @@ namespace WebApp.Controllers
         [HttpPost]
         public TokenData Authorization([FromBody]AuthData data)
         {
-           return AuthManager.AuthUser(data.login, data.password);
+           return AuthManager.AuthUser(data);
         }
 
         [HttpPost("registration")]
         public TokenData Registration([FromBody] RegistrationData data)
         {
             
-            return AuthManager.RegisterUser(data.login,data.password,new RootEnum[]{RootEnum.None});
+            return AuthManager.RegisterUser(data,new RootEnum[]{RootEnum.None});
+            
+        }
+
+        [HttpPost("logout")]
+        public void Registration([FromBody] string data)
+        {
+            AuthManager.LogOutUser(data);
         }
 
         [HttpPost("logout")]
         public void Registration([FromBody] TokenData data)
         {
-            AuthManager.LogOutUser(data.token);
+            AuthManager.LogOutUser(data.Token);
         }
 
 

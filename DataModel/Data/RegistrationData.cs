@@ -1,9 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Json;
+using DataModel.Authentication;
 
 namespace DataModel.Data
 {
-    public class RegistrationData : IData
+    public class RegistrationData : AuthData
     {
         public string Type { get; } = typeof(RegistrationData).ToString();
 
@@ -13,9 +14,9 @@ namespace DataModel.Data
 
         }
 
-        public string login;
+      
 
-        public string password;
+      
 
         public string email;
         public long number;
@@ -39,6 +40,10 @@ namespace DataModel.Data
         public IData DeserializeFromJSON()
         {
             throw new System.NotImplementedException();
+        }
+
+        public RegistrationData(string login, string password) : base(login, password)
+        {
         }
     }
 }
