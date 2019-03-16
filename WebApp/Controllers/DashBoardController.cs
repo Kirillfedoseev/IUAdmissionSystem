@@ -18,18 +18,19 @@ namespace WebApp.Controllers
 
         // POST dashboard/saveProfile
         [HttpPost("profile")]
-        public string SaveProfile([FromBody]TokenData token,[FromBody]UserProfile userProfile)
+        public string SaveProfile([FromBody] UserProfile data)
         {
-            
-            DataModelFacade.SetUserProfile(token, userProfile);
+            var tokenString = Request.Headers["token"];
+            DataModelFacade.SetUserProfile(token, data);
             //TODO: Change Data return type to void and delete after test:
             return "success";
         }
 
         [HttpGet("profile")]
-        public void GetProfile([FromBody] TokenData token)
+        public UserProfile GetProfile([FromBody] TokenData token)
         {
-            DataModelFacade.GetUserProfile(token);
+            return DataModelFacade.GetUserProfile(token);
+           
         }
 
         

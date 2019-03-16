@@ -66,7 +66,7 @@ namespace DataModel.Authentication
 
         private DateTime UpdateTime;
 
-        public string Token { get; private set; }
+        public string Token { get; set; }
         
         public bool IsValid
         {

@@ -61,7 +61,6 @@
     <Compile Include="Data\DataModelFacade.cs" />
     <Compile Include="Data\IData.cs" />
     <Compile Include="Data\RegistrationData.cs" />
-    <Compile Include="Data\TokenData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Programs\AbstractProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
