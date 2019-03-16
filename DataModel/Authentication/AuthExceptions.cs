@@ -18,11 +18,6 @@ namespace DataModel.Authentication
             public RegistrationException(AuthData authData) : base("Registration failed for unknown reason!") 
                 => _authData = authData;
         }
-        
-        public class NullAuthData : AuthExceptions
-        {
-            public NullAuthData(AuthData authData) : base(authData, "AuthData was null!") => _authData = authData;
-        }
 
         public class IncorrectPassword : AuthExceptions
         {
