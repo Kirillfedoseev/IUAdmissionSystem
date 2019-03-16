@@ -2,8 +2,10 @@
 
 namespace DataModel.Authentication
 {
-    public class AuthExceptions
+    public class AuthExceptions:Exception
     {
+        public AuthExceptions(string exception):base(exception){}
+        
         public class RegistrationException : Exception
         {
             
@@ -11,8 +13,14 @@ namespace DataModel.Authentication
             {
             }
         }
-        
-        
+
+        public class UserDidNotExists : AuthExceptions
+        {
+            public UserDidNotExists(AuthData authData) : base("The user doent's exists!")
+            {
+                
+            }
+        }
         
         
         
