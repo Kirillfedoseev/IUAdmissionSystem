@@ -11,6 +11,12 @@ namespace DataModel.Authentication
         public string Token { get; set; }
 
         public virtual bool IsValid => false;
+
+        public TokenData(string token)
+        {
+            Token = token;
+        }
+        
         
         public override bool Equals(object obj)
         {
