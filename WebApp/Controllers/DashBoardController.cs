@@ -21,14 +21,18 @@ namespace WebApp.Controllers
         public string SaveProfile([FromBody] UserProfile data)
         {
             var tokenString = Request.Headers["token"];
+            var token = new TokenData(tokenString);
             DataModelFacade.SetUserProfile(token, data);
+            
             //TODO: Change Data return type to void and delete after test:
             return "success";
         }
 
         [HttpGet("profile")]
-        public UserProfile GetProfile([FromBody] TokenData token)
+        public UserProfile GetProfile()
         {
+            var tokenString = Request.Headers["token"];
+            var token = new TokenData(tokenString);
             return DataModelFacade.GetUserProfile(token);
            
         }

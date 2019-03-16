@@ -80,6 +80,7 @@ namespace DataModel.Authentication
 
         private DateTime UpdateTime;
         
+
         public override bool IsValid
         {
             get
