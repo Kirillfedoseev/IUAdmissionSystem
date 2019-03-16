@@ -21,7 +21,7 @@ namespace DataModel.Authentication
             FreeToken(_tokensOfUsers.FirstOrDefault(n => n.Key.Token.Equals(token)).Key);
         }
 
-        private void FreeToken(TokenData tokenData)
+        public void FreeToken(TokenData tokenData)
         {
             if (tokenData == null) return;
             _tokensOfUsers.Remove(tokenData);
@@ -40,7 +40,23 @@ namespace DataModel.Authentication
             }
             
             return pair.Value;
-        }        
+        }      
+        
+        public AbstractUser ValidateAuthToken(TokenData token)
+        {
+            //todo
+            var pair = _tokensOfUsers.FirstOrDefault(n => n.Equals(token));
+            
+            if (pair.Key == null) throw new Exception("Incorrecct token!");
+            
+            if (!pair.Key.IsValid)
+            {
+                FreeToken(pair.Key);
+                throw new Exception("Token's ttl was exceeded, please login again.");
+            }
+            
+            return pair.Value;
+        }      
         
         public TokenData GetAuthToken(AbstractUser user)
         {

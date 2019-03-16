@@ -8,11 +8,11 @@ namespace DataModel.Authentication
 {
     public class AuthManager:Singletone<AuthManager>
     {
-        private Dictionary<AuthData, AbstractUser> _usersAuthData;
+        private readonly Dictionary<AuthData, AbstractUser> _usersAuthData;
 
-        private TokensRegister _register;
+        private readonly TokensRegister _register;
         
-        public AbstractUser this[string authToken] => _register.ValidateAuthToken(authToken);
+        public AbstractUser this[TokenData authToken] => _register.ValidateAuthToken(authToken);
 
         public AuthManager()
         {
@@ -29,12 +29,12 @@ namespace DataModel.Authentication
         /// <param name="login">login of the user (email)</param>
         /// <param name="password">password of the user (not encrypted)</param>
         /// <returns>auth token for the user</returns>
-        public static string AuthUser(AuthData authData)
+        public static TokenData AuthUser(AuthData authData)
         {
             if (authData == null) throw new NullReferenceException("AuthData was null!");
             var user = Instance.DoesUserExists(authData);
             
-            return Instance._register.GetAuthToken(user).Token;
+            return Instance._register.GetAuthToken(user);
         }
         
         
@@ -45,7 +45,7 @@ namespace DataModel.Authentication
         /// <param name="login"></param>
         /// <param name="password"></param>
         /// <returns></returns>
-        public static string RegisterUser(AuthData authData, RootEnum[] roots)
+        public static TokenData RegisterUser(AuthData authData, RootEnum[] roots)
         {
             AbstractUser user = new TestUser(roots); //todo factory of creating users 
             Instance._usersAuthData.Add(authData, user);
@@ -60,7 +60,7 @@ namespace DataModel.Authentication
         /// </summary>
         /// <param name="authToken">auth token, which was recieved by registration or authentication</param>
         /// <returns>notihng if success, otherwise errors</returns>
-        public static void LogOutUser(string authToken)
+        public static void LogOutUser(TokenData authToken)
         {
             Instance._register.FreeToken(authToken);
         }
@@ -72,7 +72,7 @@ namespace DataModel.Authentication
         /// </summary>
         /// <param name="authtoken">authenticate token, which was given with authentication</param>
         /// <returns>true if authToken valid, false if not</returns>
-        public static bool ValidateAuthToken(string authtoken)
+        public static bool ValidateAuthToken(TokenData authtoken)
         {
             return Instance._register.ValidateAuthToken(authtoken) != null;
         }
