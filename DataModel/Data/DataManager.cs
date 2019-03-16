@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DataModel.Data;
 using DataModel.Support;
 using DataModel.Users;
 
-namespace DataModel
+namespace DataModel.Data
 {
     public class DataManager:Singletone<DataManager>
     {

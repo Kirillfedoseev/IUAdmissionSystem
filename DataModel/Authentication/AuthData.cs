@@ -1,9 +1,7 @@
-﻿using System.Runtime.CompilerServices;
-using System.Runtime.Serialization.Json;
-using Newtonsoft.Json;
+﻿using DataModel.Data;
 using Newtonsoft.Json.Linq;
 
-namespace DataModel.Data
+namespace DataModel.Authentication
 {
     public class AuthData:IData
     {
@@ -56,7 +54,7 @@ namespace DataModel.Data
 //            {
 //                
 //            }
-            
+            return null; //todo;
         }
     }
 }
