@@ -16,14 +16,25 @@ namespace DataModel.Authentication
             _tokensOfUsers = new Dictionary<TokenData, AbstractUser>();
         }
 
-        
+        /// <summary>
+        /// Remove token form register
+        /// </summary>
+        /// <param name="tokenData">token, which should be removed</param>
         public void FreeToken(TokenData tokenData)
         {
             if (tokenData == null) return;
             _tokensOfUsers.Remove(tokenData);
         }
         
-        
+        /// <summary>
+        /// Validate passed token
+        /// Check on existing in register
+        /// Check on expiring
+        /// </summary>
+        /// <param name="token">token, which should be checked</param>
+        /// <returns>User with such token, if it exists</returns>
+        /// <exception cref="TokenDoesNotExists">If registed doesn't have such token</exception>
+        /// <exception cref="TokenExpired">If token in register, but expired</exception>
         public AbstractUser ValidateAuthToken(TokenData token)
         {
             var pair = _tokensOfUsers.FirstOrDefault(n => n.Key.Equals(token));
@@ -39,6 +50,12 @@ namespace DataModel.Authentication
             return pair.Value;
         }      
         
+        /// <summary>
+        /// Generate new auth token for particular user
+        /// </summary>
+        /// <param name="user">Particular user</param>
+        /// <returns>Valid auth token</returns>
+        /// <exception cref="ArgumentException">If user equal to null</exception>
         public TokenData GetAuthToken(AbstractUser user)
         {
             if (user == null) throw new ArgumentException("Passed parameter 'user' was null");
