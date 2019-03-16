@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using DataModel.Data;
 using DataModel.Users;
 
 namespace DataModel.Authentication
@@ -33,8 +32,8 @@ namespace DataModel.Authentication
         /// </summary>
         /// <param name="token">token, which should be checked</param>
         /// <returns>User with such token, if it exists</returns>
-        /// <exception cref="TokenDoesNotExists">If registed doesn't have such token</exception>
-        /// <exception cref="TokenExpired">If token in register, but expired</exception>
+        /// <exception cref="TokenExceptions.TokenDoesNotExists">If registed doesn't have such token</exception>
+        /// <exception cref="TokenExceptions.TokenExpired">If token in register, but expired</exception>
         public AbstractUser ValidateAuthToken(TokenData token)
         {
             var pair = _tokensOfUsers.FirstOrDefault(n => n.Key.Equals(token));
@@ -65,27 +64,23 @@ namespace DataModel.Authentication
             if (pair.Key != null)
                 FreeToken(pair.Key);
             
-            var tokenData = new TokenData();
-            tokenData.Initialize();
+            var tokenData = new PrivateTokenData();
             _tokensOfUsers.Add(tokenData, user);
             return tokenData;
         }
     }
 
-    public class TokenData : IData
-    {
-        public string Type { get; }
-        public string Data { get; }
 
+    class PrivateTokenData : TokenData
+    {
+        
         private const int TTL = 3600;
         
         private DateTime CreateTime;
 
         private DateTime UpdateTime;
-
-        public string Token { get; private set; }
         
-        public bool IsValid
+        public override bool IsValid
         {
             get
             {
@@ -97,12 +92,14 @@ namespace DataModel.Authentication
             }
         }
 
-        public TokenData()
+        public PrivateTokenData(string token)
         {
-            
+            CreateTime = DateTime.Now;
+            UpdateTime = DateTime.Now;
+            Token = token;
         }
         
-        internal void Initialize()
+        public PrivateTokenData()
         {
             CreateTime = DateTime.Now;
             UpdateTime = DateTime.Now;
@@ -115,23 +112,7 @@ namespace DataModel.Authentication
                             .ToByteArray()
                     ));              
             };
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is TokenData tokenData && tokenData.Token.Equals(Token);
-        }
-
-        
-        public string SerializeToJSON()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IData DeserializeFromJSON(string json)
-        {
-            throw new System.NotImplementedException();
-        }
+        } 
     }
     
 }
