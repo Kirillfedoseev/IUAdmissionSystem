@@ -1,39 +1,62 @@
 ﻿using System.Runtime.CompilerServices;
 using System.Runtime.Serialization.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DataModel.Data
 {
     public class AuthData:IData
     {
-        public string Type { get; } = typeof(AuthData).ToString();
-
+        
+        public string Type => typeof(AuthData).ToString();
+        
         public string Data
         {
-            get { return "json"; }
+            get
+            {                    
+                var jObject = new JObject
+                {
+                    {"login", Login},
+                    {"password", Password}
+                };
+                return jObject.ToString();
+            }
             
         }
-
-        public string login;
         
-        public string password; 
+        
+        public string Login;
+        
+        public string Password;
+
+        public AuthData(string login, string password)
+        {
+            Login = login;
+            Password = password;
+        }
+        
         
         public string SerializeToJSON()
         {
-//            {
-//                type:"type",
-//                Data:
-//                {
-//                    data1:"data",
-//                    data2:"data"
-//                }
-//            }
-            
-            throw new System.NotImplementedException();
+            var jObject = new JObject
+            {
+                {"type", Type},
+                {"data", Data}
+            };
+            return jObject.ToString();
         }
 
-        public IData DeserializeFromJSON()
+
+        public IData DeserializeFromJSON(string json)
         {
-            throw new System.NotImplementedException();
+            JObject jObject = new JObject(json);
+            JToken type = jObject["type"];
+//            
+//            if ( == typeof(AuthData).ToString())
+//            {
+//                
+//            }
+            
         }
     }
 }

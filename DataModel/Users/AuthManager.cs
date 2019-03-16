@@ -7,6 +7,8 @@ namespace DataModel
     public class AuthManager:Singletone<AuthManager>
     {
      
+        
+        
                     
         
         /// <summary>
@@ -22,7 +24,7 @@ namespace DataModel
             IData data;
             return "osfjsngjksngjsrngjrmgrgrinrinerig"; //todo return auth token
         }
-
+        
         
         /// <summary>
         /// Register new user with login and password
