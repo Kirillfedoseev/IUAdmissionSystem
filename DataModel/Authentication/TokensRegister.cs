@@ -16,7 +16,7 @@ namespace DataModel.Authentication
             _tokensOfUsers = new Dictionary<TokenData, AbstractUser>();
         }
 
-
+        
         public void FreeToken(TokenData tokenData)
         {
             if (tokenData == null) return;
@@ -28,12 +28,12 @@ namespace DataModel.Authentication
         {
             var pair = _tokensOfUsers.FirstOrDefault(n => n.Key.Equals(token));
             
-            if (pair.Key == null) throw new Exception("Incorrecct token!");
+            if (pair.Key == null) throw new TokenExceptions.TokenDoesNotExists(token);
             
             if (!pair.Key.IsValid)
             {
                 FreeToken(pair.Key);
-                throw new Exception("Token's ttl was exceeded, please login again.");
+                throw new TokenExceptions.TokenExpired(token);
             }
             
             return pair.Value;
@@ -41,7 +41,7 @@ namespace DataModel.Authentication
         
         public TokenData GetAuthToken(AbstractUser user)
         {
-            if (user == null) throw new ArgumentException("Passed paramet 'User' was null");
+            if (user == null) throw new ArgumentException("Passed parameter 'user' was null");
             var pair = _tokensOfUsers.FirstOrDefault(n => n.Value.Equals(user));
             
             // free logged in another device
@@ -49,6 +49,7 @@ namespace DataModel.Authentication
                 FreeToken(pair.Key);
             
             var tokenData = new TokenData();
+            tokenData.Initialize();
             _tokensOfUsers.Add(tokenData, user);
             return tokenData;
         }
@@ -61,11 +62,11 @@ namespace DataModel.Authentication
 
         private const int TTL = 3600;
         
-        private readonly DateTime CreateTime;
+        private DateTime CreateTime;
 
         private DateTime UpdateTime;
 
-        public readonly string Token;
+        public string Token { get; private set; }
         
         public bool IsValid
         {
@@ -78,8 +79,13 @@ namespace DataModel.Authentication
                 return true;
             }
         }
-            
+
         public TokenData()
+        {
+            
+        }
+        
+        internal void Initialize()
         {
             CreateTime = DateTime.Now;
             UpdateTime = DateTime.Now;
