@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using DataModel.Users;
 using DataModel;
+using DataModel.Authentication;
+using DataModel.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -16,17 +18,17 @@ namespace WebApp.Controllers
 
         // POST dashboard/saveProfile
         [HttpPost("profile")]
-        public void SaveProfile([FromBody]UserProfile value)
+        public string SaveProfile([FromBody]TokenData token, UserProfile userProfile)
         {
-            
+            DataModelFacade.SetUserProfile(token, userProfile);
+            //TODO: Change Data return type to void and delete after test:
+            return "success";
         }
 
         [HttpGet("profile")]
-        public void GetProfile([FromBody] string data)
+        public void GetProfile([FromBody] TokenData token)
         {
-            //TODO Change Return type to ProfileInfoData (UserInfo?)
-            throw new NotImplementedException("Data Model is not implemented yet");
-
+            DataModelFacade.GetUserProfile(token);
         }
 
         
