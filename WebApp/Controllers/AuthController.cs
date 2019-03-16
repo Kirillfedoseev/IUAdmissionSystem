@@ -50,16 +50,12 @@ namespace WebApp.Controllers
         }
 
         [HttpPost("logout")]
-        public void Registration([FromBody] string data)
+        public void Registration([FromBody] TokenData token)
         {
-            AuthManager.LogOutUser(data);
+            AuthManager.LogOutUser(token);
         }
 
-        [HttpPost("logout")]
-        public void Registration([FromBody] TokenData data)
-        {
-            AuthManager.LogOutUser(data.Token);
-        }
+       
 
 
         // PUT api/<controller>/5

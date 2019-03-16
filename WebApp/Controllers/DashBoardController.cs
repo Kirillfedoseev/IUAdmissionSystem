@@ -18,8 +18,9 @@ namespace WebApp.Controllers
 
         // POST dashboard/saveProfile
         [HttpPost("profile")]
-        public string SaveProfile([FromBody]TokenData token, UserProfile userProfile)
+        public string SaveProfile([FromBody]TokenData token,[FromBody]UserProfile userProfile)
         {
+            
             DataModelFacade.SetUserProfile(token, userProfile);
             //TODO: Change Data return type to void and delete after test:
             return "success";
