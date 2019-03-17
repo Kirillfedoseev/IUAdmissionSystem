@@ -16,6 +16,11 @@ namespace DataModel.Authentication
         {
             Token = token;
         }
+
+        public TokenData()
+        {
+
+        }
         
         
         public override bool Equals(object obj)
