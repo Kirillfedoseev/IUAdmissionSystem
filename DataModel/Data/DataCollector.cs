@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DataModel.Data;
 using DataModel.Support;
 using DataModel.Users;
 
-namespace DataModel
+namespace DataModel.Data
 {
-    public class DataManager:Singletone<DataManager>
+    public class DataCollector:Singletone<DataCollector>
     {
         
         private readonly Dictionary<AbstractUser, List<IData>> _data;
         
         
-        public DataManager()
+        public DataCollector()
         {
             _data = LoadData() ?? new Dictionary<AbstractUser, List<IData>>();
         }

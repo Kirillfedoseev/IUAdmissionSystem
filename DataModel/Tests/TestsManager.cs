@@ -1,6 +1,6 @@
 ﻿using DataModel.Support;
 
-namespace DataModel
+namespace DataModel.Tests
 {
     public class TestsManager:Singletone<TestsManager>
     {

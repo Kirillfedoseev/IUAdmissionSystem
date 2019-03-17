@@ -53,8 +53,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\AuthData.cs" />
-    <Compile Include="Data\DataManager.cs" />
+    <Compile Include="Authentication\AuthData.cs" />
+    <Compile Include="Authentication\AuthExceptions.cs" />
+    <Compile Include="Authentication\AuthManager.cs" />
+    <Compile Include="Authentication\TokensRegister.cs" />
+    <Compile Include="Data\DataCollector.cs" />
+    <Compile Include="Data\DataModelFacade.cs" />
     <Compile Include="Data\IData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Programs\AbstractProgram.cs" />
@@ -65,9 +69,9 @@
     <Compile Include="Tests\TestItems\SimpleTestItem.cs" />
     <Compile Include="Tests\TestsManager.cs" />
     <Compile Include="Users\AbstractUser.cs" />
-    <Compile Include="Users\AuthManager.cs" />
     <Compile Include="Users\Root.cs" />
-    <Compile Include="Users\TokensRegister.cs" />
+    <Compile Include="Users\TestUser.cs" />
+    <Compile Include="Users\UserProfile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
