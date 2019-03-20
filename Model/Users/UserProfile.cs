@@ -16,7 +16,7 @@
         
         public string About { get; set; } //todo limit 400 chars
         
-        public string PhotoUrl { get; set; } 
+        public string PhotoUrl { get; set; } //url to photo
         
     }
 }
