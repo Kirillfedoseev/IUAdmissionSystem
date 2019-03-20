@@ -1,4 +1,4 @@
-﻿namespace DataModel.Data
+﻿namespace Model.Data
 {
     public interface IData
     {

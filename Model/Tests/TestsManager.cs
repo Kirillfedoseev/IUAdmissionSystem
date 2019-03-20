@@ -1,6 +1,6 @@
-﻿using DataModel.Support;
+﻿using Model.Support;
 
-namespace DataModel.Tests
+namespace Model.Tests
 {
     public class TestsManager:Singletone<TestsManager>
     {

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using DataModel.Support;
-using DataModel.Users;
+using Model.Support;
+using Model.Users;
 
-namespace DataModel.Authentication
+namespace Model.Authentication
 {
     public class AuthManager:Singletone<AuthManager>
     {

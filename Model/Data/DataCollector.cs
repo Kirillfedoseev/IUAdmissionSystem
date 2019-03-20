@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DataModel.Support;
-using DataModel.Users;
+using Model.Support;
+using Model.Users;
 
-namespace DataModel.Data
+namespace Model.Data
 {
     public class DataCollector:Singletone<DataCollector>
     {

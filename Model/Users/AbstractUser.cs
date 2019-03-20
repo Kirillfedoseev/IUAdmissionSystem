@@ -1,7 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace DataModel.Users
+namespace Model.Users
 {
     public abstract class AbstractUser
     {

@@ -1,24 +1,21 @@
-﻿using System.Collections.Generic;
-using DataModel.Data;
+﻿using Model.Data;
 
-namespace DataModel.Tests
+namespace Model.Programs
 {
-    public class Test:IData
+    public abstract class AbstractProgram:IData
     {
         public string Type => GetType().ToString();
         
-        public string Data { get; }
+        public abstract string Data { get; }
         
 
         public string Name;
-                
+        
+        public CourseEnum Course { get; protected set; }
+        
         public string Description { get; protected set; }
         
         //todo add other properties
-
-        public List<ITestableItem> testItems;
-        
-        
         
         public string SerializeToJSON()
         {
@@ -29,5 +26,14 @@ namespace DataModel.Tests
         {
             throw new System.NotImplementedException();
         }
+        
+        
     }
+
+    public enum CourseEnum
+    {
+        Bachelor,
+        Master
+    }
+    
 }

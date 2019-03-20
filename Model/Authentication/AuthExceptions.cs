@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataModel.Authentication
+namespace Model.Authentication
 {
     public class AuthExceptions:Exception
     {

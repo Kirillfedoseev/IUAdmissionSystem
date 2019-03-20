@@ -1,6 +1,4 @@
-﻿using System.ComponentModel;
-
-namespace DataModel.Support
+﻿namespace Model.Support
 {
     public class Singletone<T> where T : class, new()
     {

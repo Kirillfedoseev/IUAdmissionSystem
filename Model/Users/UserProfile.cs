@@ -1,6 +1,6 @@
 ﻿using System.Security.Policy;
 
-namespace DataModel.Users
+namespace Model.Users
 {
     public struct UserProfile
     {

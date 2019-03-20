@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DataModel.Users;
-using DataModel;
-using DataModel.Authentication;
-using DataModel.Data;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Infrastructure;
+﻿using Microsoft.AspNetCore.Mvc;
+using Model.Authentication;
+using Model.Data;
+using Model.Users;
 
 
 namespace WebApp.Controllers

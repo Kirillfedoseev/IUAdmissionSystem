@@ -1,7 +1,7 @@
 ﻿using System;
-using DataModel.Data;
+using Model.Data;
 
-namespace DataModel.Authentication
+namespace Model.Authentication
 {
     public class TokenData : IData
     {

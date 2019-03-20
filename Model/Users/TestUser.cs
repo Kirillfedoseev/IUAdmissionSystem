@@ -1,4 +1,4 @@
-﻿namespace DataModel.Users
+﻿namespace Model.Users
 {
     public class TestUser:AbstractUser
     {

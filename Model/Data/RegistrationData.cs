@@ -1,22 +1,13 @@
-﻿using System.Runtime.CompilerServices;
-using System.Runtime.Serialization.Json;
-using DataModel.Authentication;
+﻿using Model.Authentication;
 
-namespace DataModel.Data
+namespace Model.Data
 {
     public class RegistrationData : AuthData
     {
         public string Type { get; } = typeof(RegistrationData).ToString();
 
-        public string Data
-        {
-            get { return "json"; }
+        public new string Data => "json";
 
-        }
-
-      
-
-      
 
         public string email;
         public long number;

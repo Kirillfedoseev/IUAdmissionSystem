@@ -1,6 +1,6 @@
-﻿using DataModel.Data;
+﻿using Model.Data;
 
-namespace DataModel.Tests.TestItems
+namespace Model.Tests.TestItems
 {
     public class SimpleTestItem:IData, ITestableItem
     {

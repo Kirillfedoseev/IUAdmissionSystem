@@ -1,4 +1,4 @@
-﻿namespace DataModel.Users
+﻿namespace Model.Users
 {
 
     public abstract class AbstractRoot

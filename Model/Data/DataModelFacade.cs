@@ -1,7 +1,7 @@
-﻿using DataModel.Authentication;
-using DataModel.Users;
+﻿using Model.Authentication;
+using Model.Users;
 
-namespace DataModel.Data
+namespace Model.Data
 {
     public class DataModelFacade
     {

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
-using DataModel.Users;
+using Model.Users;
 
-namespace DataModel.Authentication
+namespace Model.Authentication
 {
     public class TokensRegister
     {

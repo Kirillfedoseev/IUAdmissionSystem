@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DataModel;
-using DataModel.Authentication;
-using DataModel.Data;
-using DataModel.Users;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using Model.Authentication;
+using Model.Data;
+using Model.Users;
 
 
 

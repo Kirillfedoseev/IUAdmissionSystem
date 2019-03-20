@@ -1,4 +1,4 @@
-﻿namespace DataModel.Tests
+﻿namespace Model.Tests
 {
     public interface ITestableItem
     {
