@@ -1,6 +1,4 @@
-﻿using System.Security.Policy;
-
-namespace Model.Users
+﻿namespace Model.Users
 {
     public struct UserProfile
     {
@@ -18,7 +16,7 @@ namespace Model.Users
         
         public string About { get; set; } //todo limit 400 chars
         
-        public Url PhotoUrl { get; set; } 
+        public string PhotoUrl { get; set; } 
         
     }
 }
