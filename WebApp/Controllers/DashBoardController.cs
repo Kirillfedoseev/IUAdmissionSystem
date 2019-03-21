@@ -26,7 +26,7 @@ namespace WebApp.Controllers
         }
 
         [EnableCors]
-        [HttpPost("profile")]
+        [HttpPost("profileget")]
         public UserProfile GetProfile()
         {
             var tokenString = Request.Headers["Authorization"];
