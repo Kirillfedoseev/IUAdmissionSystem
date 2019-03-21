@@ -13,6 +13,15 @@ namespace WebApp.Controllers
     [Route("[controller]")]
     public class AuthController : Controller
     {
+
+
+        [HttpOptions]
+        public OkResult Options()
+        {
+            HttpContext.Response.Headers.Add("Allow", "GET,OPTIONS");
+            return Ok();
+        }
+
         // GET: api/<controller>
         [HttpGet]
         public IEnumerable<string> Get()
