@@ -17,14 +17,10 @@ namespace WebApp.Controllers
     {
 
 
-        [HttpOptions]
-        public OkResult Options()
-        {
-            HttpContext.Response.Headers.Add("Allow", "GET,OPTIONS");
-            return Ok();
-        }
+      
 
         // GET: api/<controller>
+        [EnableCors]
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -32,6 +28,7 @@ namespace WebApp.Controllers
         }
 
         // GET api/<controller>/5
+        [EnableCors]
         [HttpGet("{id}")]
         public string Get(int id)
         {
@@ -41,6 +38,7 @@ namespace WebApp.Controllers
 
 
         // POST User Authorization
+        [EnableCors]
         [HttpPost]
         public TokenData Authorization([FromBody]AuthData data)
         {
@@ -55,34 +53,28 @@ namespace WebApp.Controllers
             return AuthManager.RegisterUser(data,new RootEnum[]{RootEnum.None});
         }
 
-        public class Headers
-        {
+        
 
-        }
-
+       
         [EnableCors]
-        [HttpOptions("registration")]
-        public AccessControlType RegistrationOptions([FromBody] RegistrationData data)
-        {
-            return AccessControlType.Allow;
-        }
-
         [HttpPost("logout")]
         public void Registration([FromBody] TokenData token)
         {
             AuthManager.LogOutUser(token);
         }
 
-       
+
 
 
         // PUT api/<controller>/5
+        [EnableCors]
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
 
         // DELETE api/<controller>/5
+        [EnableCors]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
