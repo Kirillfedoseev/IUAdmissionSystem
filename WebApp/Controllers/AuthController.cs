@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Security.AccessControl;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
 using Model.Data;
@@ -13,7 +15,12 @@ namespace WebApp.Controllers
     [Route("[controller]")]
     public class AuthController : Controller
     {
+
+
+      
+
         // GET: api/<controller>
+        [EnableCors]
         [HttpGet]
         public IEnumerable<string> Get()
         {
@@ -21,6 +28,7 @@ namespace WebApp.Controllers
         }
 
         // GET api/<controller>/5
+        [EnableCors]
         [HttpGet("{id}")]
         public string Get(int id)
         {
@@ -30,36 +38,43 @@ namespace WebApp.Controllers
 
 
         // POST User Authorization
+        [EnableCors]
         [HttpPost]
         public TokenData Authorization([FromBody]AuthData data)
         {
            return AuthManager.AuthUser(data);
         }
 
+        [EnableCors]
         [HttpPost("registration")]
         public TokenData Registration([FromBody] RegistrationData data)
         {
             
             return AuthManager.RegisterUser(data,new RootEnum[]{RootEnum.None});
-            
         }
 
+        
+
+       
+        [EnableCors]
         [HttpPost("logout")]
         public void Registration([FromBody] TokenData token)
         {
             AuthManager.LogOutUser(token);
         }
 
-       
+
 
 
         // PUT api/<controller>/5
+        [EnableCors]
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {
         }
 
         // DELETE api/<controller>/5
+        [EnableCors]
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
