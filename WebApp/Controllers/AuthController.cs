@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Security.AccessControl;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
 using Model.Data;
@@ -45,12 +47,24 @@ namespace WebApp.Controllers
            return AuthManager.AuthUser(data);
         }
 
+        [EnableCors]
         [HttpPost("registration")]
         public TokenData Registration([FromBody] RegistrationData data)
         {
             
             return AuthManager.RegisterUser(data,new RootEnum[]{RootEnum.None});
-            
+        }
+
+        public class Headers
+        {
+
+        }
+
+        [EnableCors]
+        [HttpOptions("registration")]
+        public AccessControlType RegistrationOptions([FromBody] RegistrationData data)
+        {
+            return AccessControlType.Allow;
         }
 
         [HttpPost("logout")]
