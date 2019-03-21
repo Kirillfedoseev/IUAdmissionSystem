@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
 using Model.Data;
 using Model.Users;
@@ -10,11 +11,13 @@ namespace WebApp.Controllers
     public class DashBoardController : Controller
     {
 
+
         // POST dashboard/saveProfile
+        [EnableCors]
         [HttpPost("profile")]
         public string SaveProfile([FromBody] UserProfile data)
         {
-            var tokenString = Request.Headers["token"];
+            var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
             DataModelFacade.SetUserProfile(token, data);
             
@@ -22,10 +25,11 @@ namespace WebApp.Controllers
             return "success";
         }
 
-        [HttpGet("profile")]
+        [EnableCors]
+        [HttpPost("profile")]
         public UserProfile GetProfile()
         {
-            var tokenString = Request.Headers["token"];
+            var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
             return DataModelFacade.GetUserProfile(token);
            
