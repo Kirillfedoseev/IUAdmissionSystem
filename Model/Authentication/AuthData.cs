@@ -56,5 +56,12 @@ namespace Model.Authentication
 //            }
             return null; //todo;
         }
+
+
+        public override bool Equals(object obj)
+        {
+            var authData = obj as AuthData;
+            return string.Equals(authData?.Login, Login);
+        }
     }
 }

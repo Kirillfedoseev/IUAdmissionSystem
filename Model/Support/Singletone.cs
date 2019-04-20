@@ -6,9 +6,6 @@
         public static T Instance => _instance ?? (_instance = new T());
 
         private static T _instance;
-        
-        
-        
-
+                
     }
 }
