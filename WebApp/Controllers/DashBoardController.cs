@@ -1,5 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
+using System.Text;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
@@ -10,49 +12,46 @@ using Model.Users;
 namespace WebApp.Controllers
 {
     [EnableCors("AllowMyOrigin")]
-    [Route("[controller]")]
     public class DashBoardController : Controller
     {
 
-        [HttpPost("profile")]
-        public void SaveProfile([FromBody] UserProfile data)
+
+        // POST dashboard/saveProfile
+        [HttpPost("dashboard/profile")]
+        public string SaveProfile([FromBody] UserProfile data)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-            DataModelFacade.SetUserProfile(token, data);           
+            DataModelFacade.SetUserProfile(token, data);
+            
+            //TODO: Change Data return type to void and delete after test:
+            return "success";
         }
 
 
-        [HttpGet("profile")]
+    
+        [HttpGet("dashboard/profile")]
         public UserProfile GetProfile()
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-            return DataModelFacade.GetUserProfile(token);      
+            return DataModelFacade.GetUserProfile(token);
+           
         }
 
-
-        [HttpPost("photo")]
-        public void SavePhoto([FromBody] FileData data)
-        {
-            var tokenString = Request.Headers["Authorization"];
-            var token = new TokenData(tokenString);
-        }
-
-
-        [HttpGet("photo")]
-        public FileData GetPhoto()
+        [HttpPost("manager/candidateStatus")]
+        public UserProfile SetCandidateStatus([FromBody] string data) //TODO: Change to CanditateStatus Data
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            return null;
+            throw new NotImplementedException();
+
         }
 
 
-
-
-
+        //TODO: DELETE DEPRICATED
+        [EnableCors]
         [HttpPost("uploadFile")]
         public string UploadFile([FromBody] FileData data)
         {
