@@ -32,14 +32,6 @@ namespace Model
             => FileManager.GetFile(GetUser(authToken), type);
 
 
-        public static void UpdateCandidateStatus(TokenData authToken, int id, CandidateUser.AdmissionStatus status)
-        {
-            if(AuthManager.ValidateAuthToken(authToken)) 
-                throw new TokenExceptions.TokenDoesNotExists(authToken);
-            InterviewManager.GetCandidate(id).Status = status;
-        }
-
-
         private static AbstractUser GetUser(TokenData authToken) 
             => AuthManager.Instance[authToken];
         
