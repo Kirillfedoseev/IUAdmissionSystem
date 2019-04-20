@@ -30,8 +30,7 @@ namespace Model.Authentication
         /// After auth, user gets unique auth token, with which only one can access to the system
         /// After session user must logout
         /// </summary>
-        /// <param name="login">login of the user (email)</param>
-        /// <param name="password">password of the user (not encrypted)</param>
+        /// <param name="authData">login of the user (email) and password of the user (not encrypted)</param>
         /// <exception cref="ArgumentException">Check on null arguments</exception>
         /// <exception cref="AuthExceptions.UserDoesNotExists">If user's login doesnt' exists in DB</exception>
         /// <exception cref="AuthExceptions.IncorrectPassword">If password incorrect</exception>
@@ -41,7 +40,7 @@ namespace Model.Authentication
             if (authData == null) 
                 throw new ArgumentException("Passed parameter was null",nameof(authData));
             
-            var user = Instance.DoesUserExists(authData);
+            var user = DoesUserExists(authData);
             
             return Instance._register.GetAuthToken(user);
         }
@@ -51,8 +50,7 @@ namespace Model.Authentication
         /// Register new user with login and password
         /// Also authenticate user
         /// </summary>
-        /// <param name="login"> Login of new user</param>
-        /// <param name="password">Password for new user</param>
+        /// <param name="authData">login of the user (email) and password of the user (not encrypted)</param>
         /// <exception cref="AuthExceptions.RegistrationException">If something went wrong</exception>
         /// <returns>Authenticated Token</returns>
         public static TokenData RegisterUser(AuthData authData, RootEnum[] roots)
@@ -76,7 +74,7 @@ namespace Model.Authentication
         /// Needs for security purposes
         /// </summary>
         /// <param name="authToken">auth token, which was recieved by registration or authentication</param>
-        /// <returns>notihng if success, otherwise errors</returns>
+        /// <returns>nothing if success, otherwise errors</returns>
         public static void LogOutUser(TokenData authToken)
         {
             Instance._register.FreeToken(authToken);
@@ -87,13 +85,13 @@ namespace Model.Authentication
         /// Auth tokens has TTL, and after validating TTL updates, 
         /// If register doesn't contain authToken, then you must Auth again 
         /// </summary>
-        /// <param name="authtoken">authenticate token, which was given with authentication</param>
+        /// <param name="authToken">authenticate token, which was given with authentication</param>
         /// <exception cref="TokenExceptions.TokenDoesNotExists">If registed doesn't have such token</exception>
         /// <exception cref="TokenExceptions.TokenExpired">If token in register, but expired</exception>
         /// <returns>true if authToken valid, false if not</returns>
-        public static bool ValidateAuthToken(TokenData authtoken)
+        public static bool ValidateAuthToken(TokenData authToken)
         {
-            return Instance._register.ValidateAuthToken(authtoken) != null;
+            return Instance._register.ValidateAuthToken(authToken) != null;
         }
 
         /// <summary>
@@ -101,11 +99,11 @@ namespace Model.Authentication
         /// </summary>
         /// <param name="authData">authentication data of some user</param>
         /// <returns>User with such auth data</returns>
-        /// <exception cref="AuthExceptions.UserDoesNotExists">If user's login doesnt' exists in DB</exception>
+        /// <exception cref="AuthExceptions.UserDoesNotExists">If user's login doesn't exists in DB</exception>
         /// <exception cref="AuthExceptions.IncorrectPassword">If password incorrect</exception>
-        private AbstractUser DoesUserExists(AuthData authData)
+        public static AbstractUser DoesUserExists(AuthData authData)
         {
-            var pair = _usersAuthData.FirstOrDefault(n => n.Key.Login.Equals(authData.Login)); 
+            var pair = Instance._usersAuthData.FirstOrDefault(n => n.Key.Login.Equals(authData.Login)); 
             
             if (pair.Key == null) 
                 throw new AuthExceptions.UserDoesNotExists(authData);
