@@ -12,14 +12,12 @@ using Model.Users;
 namespace WebApp.Controllers
 {
     [EnableCors("AllowMyOrigin")]
-    [Route("[controller]")]
     public class DashBoardController : Controller
     {
 
 
         // POST dashboard/saveProfile
-        [EnableCors]
-        [HttpPost("profile")]
+        [HttpPost("dashboard/profile")]
         public string SaveProfile([FromBody] UserProfile data)
         {
             var tokenString = Request.Headers["Authorization"];
@@ -30,8 +28,9 @@ namespace WebApp.Controllers
             return "success";
         }
 
-        [EnableCors]
-        [HttpPost("profileget")]
+
+    
+        [HttpGet("dashboard/profile")]
         public UserProfile GetProfile()
         {
             var tokenString = Request.Headers["Authorization"];
@@ -40,6 +39,18 @@ namespace WebApp.Controllers
            
         }
 
+        [HttpPost("manager/candidateStatus")]
+        public UserProfile SetCandidateStatus([FromBody] string data) //TODO: Change to CanditateStatus Data
+        {
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+
+            throw new NotImplementedException();
+
+        }
+
+
+        //TODO: DELETE DEPRICATED
         [EnableCors]
         [HttpPost("uploadFile")]
         public string UploadFile([FromBody] FileData data)
