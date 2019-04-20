@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Model.Authentication;
 using Model.Data;
+using Model.Interviews;
+using Model.Users;
 
 namespace WebApp.Controllers
 {
@@ -15,63 +11,64 @@ namespace WebApp.Controllers
     {
 
         [HttpGet("interviewer/candidates")]
-        public string GetCandidatesForInterviewer()
+        public CandidateUser[] GetCandidatesForInterviewer()
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-
-            throw new NotImplementedException();
-
+            //todo interviewer id
+            return InterviewManager.GetCandidateUserList(token);
         }
 
         [HttpPost("interviewer/updateGrade")]
-        public string UpdateGrade([FromBody] string someData) //TODO: Change to GradeInfo Data
+        public void UpdateGrade([FromBody] string someData) //TODO: Change to GradeInfo Data
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            throw new NotImplementedException();
-
+            //todo give status of interview
+            InterviewManager.SetInterviewResults(1, InterviewManager.InterviewStatus.Fail);
         }
 
         [HttpGet("manager/interview/candidates")]
-        public string ShowAllCandidatesReadyForInterview() 
+        public CandidateUser[] ShowAllCandidatesReadyForInterview() 
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-
-            throw new NotImplementedException();
+            //todo checks and token validation
+            return InterviewManager.GetCandidateUserList();
 
         }
 
         [HttpPost("manager/addInterview")]
-        public string AddInterview([FromBody] string someData) //TODO: Change to InterviewInfo Data
+        public void AddInterview([FromBody] string someData) //TODO: Change to InterviewInfo Data
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            throw new NotImplementedException();
-
+            //todo set ids of interviewer and candidate
+            //todo checks
+            InterviewManager.CreateInterview(1,1);
         }
 
         [HttpPost("manager/editInterview")]
-        public string EditInterview([FromBody] string someData) //TODO: Change to InterviewIdentification Data
+        public void EditInterview([FromBody] string someData) //TODO: Change to InterviewIdentification Data
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            throw new NotImplementedException();
-
+            //todo checks
+            InterviewManager.DeleteInterview(1,1);
+            InterviewManager.CreateInterview(2, 1);
         }
 
         [HttpPost("manager/deleteInterview")]
-        public string DeleteInterview([FromBody] string someData) //TODO: Change to InterviewIdentification Data
+        public void DeleteInterview([FromBody] string someData) //TODO: Change to InterviewIdentification Data
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            throw new NotImplementedException();
-
+            //todo checks
+            InterviewManager.DeleteInterview(1, 1);
         }
 
 
