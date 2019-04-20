@@ -11,6 +11,7 @@ using Model.Users;
 
 namespace WebApp.Controllers
 {
+    [EnableCors("AllowMyOrigin")]
     [Route("[controller]")]
     public class DashBoardController : Controller
     {
