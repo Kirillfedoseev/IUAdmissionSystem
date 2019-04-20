@@ -4,7 +4,7 @@ namespace Model.Users
 {
     public abstract class AbstractUser
     {
-        private readonly int id;
+        public readonly int id;
 
           
         public UserProfile Profile { get; internal set; }
