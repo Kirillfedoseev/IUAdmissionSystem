@@ -23,7 +23,7 @@ namespace Model.Users
 
                 Type genericListType = typeof(List<>).MakeGenericType(subclassType);
                 Activator.CreateInstance(genericListType);
-                _specificUserLists.Add(subclassType, (List<AbstractUser>) Activator.CreateInstance(genericListType));
+                //todo _specificUserLists.Add(subclassType, (List<AbstractUser>) Activator.CreateInstance(genericListType));
             }
         }
 
@@ -31,7 +31,7 @@ namespace Model.Users
         {
             //todo logic of understanding roots
             CandidateUser user = new CandidateUser();
-            Instance._specificUserLists[user.GetType()].Add(user);
+            //todo Instance._specificUserLists[user.GetType()].Add(user);
             return user;
         }
 

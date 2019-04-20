@@ -10,8 +10,8 @@ namespace WebApp.Controllers
     [EnableCors("AllowMyOrigin")]
     public class DocumentSubmissionController : Controller
     {
-
-        [HttpGet("{type}", Name = "dashboard/photo")]
+        [Route("dashboard/photo")]
+        [HttpGet("{type}")]
         public (FileData fileData, string bytes) GetFile(string type)
         {
 
@@ -25,7 +25,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost("dashboard/photo")]
-        public void UploadPhoto([FromBody] FileData data, [FromBody] string bytes)
+        public void UploadPhoto([FromBody] FileInput input)
         {
             
             var tokenString = Request.Headers["Authorization"];
@@ -34,9 +34,14 @@ namespace WebApp.Controllers
             //Send file stream to DB
             //todo exceptions and token check
             AbstractUser user = AuthManager.Instance[token];
-            FileManager.SubmitFile(user, data, bytes);
+            FileManager.SubmitFile(user, input.Data, input.Bytes);
         }
         
+        public struct FileInput
+        {
+            public FileData Data { get; set; }
+            public string Bytes { get; set; }
+        }
 
     }
 }
