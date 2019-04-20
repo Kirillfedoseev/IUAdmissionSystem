@@ -11,13 +11,13 @@ using System.Net;
 
 namespace WebApp.Controllers
 {
+    [EnableCors("AllowMyOrigin")]
     [Route("[controller]")]
     public class AuthController : Controller
     {
 
 
         // POST User Authorization
-        [EnableCors]
         [HttpPost]
         public TokenData Authorization([FromBody]AuthData data)
         {
@@ -42,7 +42,6 @@ namespace WebApp.Controllers
             }
         }
 
-        [EnableCors]
         [HttpPost("registration")]
         public TokenData Registration([FromBody] RegistrationData data)
         {
@@ -63,7 +62,6 @@ namespace WebApp.Controllers
         }
 
                
-        [EnableCors]
         [HttpPost("logout")]
         public void LogOut([FromBody] TokenData token)
         {
@@ -79,5 +77,10 @@ namespace WebApp.Controllers
 
         }
 
+
+        protected override void Dispose(bool disposing)
+        {
+            AuthManager.Instance.Dispose();
+        }
     }
 }

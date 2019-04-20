@@ -11,8 +11,11 @@ namespace Model.Users
         
         
         private List<RootEnum> Roots { get; set; }
-        
-        
+
+
+        public string PhotoUrl { get; set; } //todo url to photo
+
+
         protected AbstractUser(RootEnum[] roots)
         {
             id = 1; //todo genrate id
