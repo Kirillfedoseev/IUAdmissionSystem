@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
 using Model.Users;
+using Model.Data;
+using System.Text;
 
 namespace WebApp.Controllers
 {
@@ -16,136 +18,186 @@ namespace WebApp.Controllers
     {
         #region Photo
         [HttpGet("dashboard/photo")]
-        public string GetPhoto()
+        public FileData GetPhoto()
         {
-            throw new NotImplementedException();
+
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);            
+
+            //Read Stream and convert to String
+            Stream stream = DataModelFacade.GetFile(token, FileTypes.Photo);
+            string fileString = StreamToString(stream);
+
+            //Initialize Result for response
+            FileData result = new FileData();
+            result.FileName = FileTypes.Photo.ToString();
+            result.FileString = fileString;
+
+            return result;
         }
 
         [HttpPost("dashboard/photo")]
-        public string UploadPhoto([FromBody] FileData data)
+        public void UploadPhoto([FromBody] FileData data)
         {
-            var tokenString = data.Token;
+            var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-          
 
-            var fileName = data.FileName;
-            var fileString = data.FileString;
+            Stream stream = StringToStream(data.FileString);
 
-
-            var byteArray = Convert.FromBase64String(fileString);
-            var stream = new MemoryStream(byteArray);
-            throw new NotImplementedException();
-
-            return "success";
+            //Send file stream to DB
+            DataModelFacade.SubmitFile(token, FileTypes.Photo, stream);
         }
         #endregion Photo
 
         #region MotivationLetter
         [HttpGet("dashboard/motivationLetter")]
-        public string GetMotivationLetter()
+        public FileData GetMotivationLetter()
         {
-            throw new NotImplementedException();
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+
+            //Read Stream and convert to String
+            Stream stream = DataModelFacade.GetFile(token, FileTypes.Letter);
+            string fileString = StreamToString(stream);
+
+            //Initialize Result for response
+            FileData result = new FileData();
+            result.FileName = FileTypes.Letter.ToString();
+            result.FileString = fileString;
+
+            return result;
         }
 
         [HttpPost("dashboard/motivationLetter")]
-        public string UploadMotivationLetter([FromBody] FileData data)
+        public void UploadMotivationLetter([FromBody] FileData data)
         {
-            var tokenString = data.Token;
+            var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
 
+            Stream stream = StringToStream(data.FileString);
 
-            var fileName = data.FileName;
-            var fileString = data.FileString;
+            //Send file stream to DB
+            DataModelFacade.SubmitFile(token, FileTypes.Letter, stream);
 
 
-            var byteArray = Convert.FromBase64String(fileString);
-            var stream = new MemoryStream(byteArray);
-            throw new NotImplementedException();
-
-            return "success";
         }
         #endregion
 
         #region Portfolio
         [HttpGet("dashboard/portfolio")]
-        public string GetPortfolio()
+        public FileData GetPortfolio()
         {
-            throw new NotImplementedException();
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+
+            //Read Stream and convert to String
+            Stream stream = DataModelFacade.GetFile(token, FileTypes.CV);
+            string fileString = StreamToString(stream);
+
+            //Initialize Result for response
+            FileData result = new FileData();
+            result.FileName = FileTypes.CV.ToString();
+            result.FileString = fileString;
+
+            return result;
         }
 
         [HttpPost("dashboard/portfolio")]
-        public string UploadPortfolio([FromBody] FileData data)
+        public void UploadPortfolio([FromBody] FileData data)
         {
-            var tokenString = data.Token;
+            var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
 
+            Stream stream = StringToStream(data.FileString);
 
-            var fileName = data.FileName;
-            var fileString = data.FileString;
-
-
-            var byteArray = Convert.FromBase64String(fileString);
-            var stream = new MemoryStream(byteArray);
-            throw new NotImplementedException();
-
-            return "success";
+            //Send file stream to DB
+            DataModelFacade.SubmitFile(token, FileTypes.CV, stream);
         }
         #endregion
 
         #region Transcript
         [HttpGet("dashboard/transcript")]
-        public string GetTranscript()
+        public FileData GetTranscript()
         {
-            throw new NotImplementedException();
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+
+            //Read Stream and convert to String
+            Stream stream = DataModelFacade.GetFile(token, FileTypes.Transcripts);
+            string fileString = StreamToString(stream);
+
+            //Initialize Result for response
+            FileData result = new FileData();
+            result.FileName = FileTypes.Transcripts.ToString();
+            result.FileString = fileString;
+
+            return result;
         }
 
         [HttpPost("dashboard/transcript")]
-        public string UploadTranscript([FromBody] FileData data)
+        public void UploadTranscript([FromBody] FileData data)
         {
-            var tokenString = data.Token;
+            var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
 
+            Stream stream = StringToStream(data.FileString);
 
-            var fileName = data.FileName;
-            var fileString = data.FileString;
-
-
-            var byteArray = Convert.FromBase64String(fileString);
-            var stream = new MemoryStream(byteArray);
-            throw new NotImplementedException();
-
-            return "success";
+            //Send file stream to DB
+            DataModelFacade.SubmitFile(token, FileTypes.Transcripts, stream);
         }
         #endregion
 
         #region Passport
         [HttpGet("dashboard/passport")]
-        public string GetPassport()
+        public FileData GetPassport()
         {
-            throw new NotImplementedException();
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+
+            //Read Stream and convert to String
+            Stream stream = DataModelFacade.GetFile(token, FileTypes.Passport);
+            string fileString = StreamToString(stream);
+
+            //Initialize Result for response
+            FileData result = new FileData();
+            result.FileName = FileTypes.Passport.ToString();
+            result.FileString = fileString;
+
+            return result;
         }
 
-        [HttpPost("dashboard/transcript")]
-        public string GetTranscript([FromBody] FileData data)
+        [HttpPost("dashboard/passport")]
+        public void UploadPassports([FromBody] FileData data)
         {
-            var tokenString = data.Token;
+            var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
 
+            Stream stream = StringToStream(data.FileString);
 
-            var fileName = data.FileName;
-            var fileString = data.FileString;
+            //Send file stream to DB
+            DataModelFacade.SubmitFile(token, FileTypes.Passport, stream);
+        }
+        #endregion
 
+        #region Private Methods
+        private string StreamToString(Stream stream)
+        {
+            //Read Stream and convert to String
+            StreamReader reader = new StreamReader(stream);
+            string fileString = reader.ReadToEnd();
+            return fileString;
+        }
 
-            var byteArray = Convert.FromBase64String(fileString);
-            var stream = new MemoryStream(byteArray);
-            throw new NotImplementedException();
-
-            return "success";
+        private Stream StringToStream(string fileString)
+        {
+            byte[] byteArray = Encoding.ASCII.GetBytes(fileString);
+            MemoryStream stream = new MemoryStream(byteArray);
+            return stream;
         }
         #endregion
     }
