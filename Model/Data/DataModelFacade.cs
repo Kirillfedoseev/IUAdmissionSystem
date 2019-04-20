@@ -1,4 +1,5 @@
-﻿using Model.Authentication;
+﻿using System.IO;
+using Model.Authentication;
 using Model.Users;
 
 namespace Model.Data
@@ -18,11 +19,19 @@ namespace Model.Data
      
         public static void SetUserProfile(TokenData authToken, UserProfile profile) 
             => GetUser(authToken).Profile = profile;
-        
-        
-        
+
+
+        public static void SubmitFile(TokenData authToken,FileTypes type, Stream fileStream)
+            => FileManager.SubmitFile(GetUser(authToken), type, fileStream);
+
+
+        public static Stream GetFile(TokenData authToken, FileTypes type)
+            => FileManager.GetFile(GetUser(authToken), type);
+
+
         private static AbstractUser GetUser(TokenData authToken) 
             => AuthManager.Instance[authToken];
         
+
     }
 }

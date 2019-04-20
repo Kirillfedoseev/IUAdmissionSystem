@@ -14,36 +14,14 @@ namespace Model.Data
 
         private static string GetFullFileName(int id, string name) => $"{RootStorageDirectory}/{id}/{name}";
 
-#region Submit
 
-        public static void SubmitCV(AbstractUser user, Stream fileStream) 
-            => SaveFile(user, GetFullFileName(user.id, "CV"), fileStream);
+        public static void SubmitFile(AbstractUser user, FileTypes type, Stream fileStream)
+            => SaveFile(user, GetFullFileName(user.id, type.ToString()), fileStream);
+        
 
-        public static void SubmitPassport(AbstractUser user, Stream fileStream)
-            => SaveFile(user, GetFullFileName(user.id, "Passport"), fileStream);
-
-        public static void SubmitLetter(AbstractUser user, Stream fileStream)
-            => SaveFile(user, GetFullFileName(user.id, "Letter"), fileStream);
-
-        public static void SubmitTranscripts(AbstractUser user, Stream fileStream)
-            => SaveFile(user, GetFullFileName(user.id, "Transcripts"), fileStream);
-        #endregion
-
-#region Get
-
-        public static Stream GetCV(AbstractUser user)
-            => GetFile(user, GetFullFileName(user.id, "CV"));
-
-        public static Stream GetPassport(AbstractUser user)
-            => GetFile(user, GetFullFileName(user.id, "Passport"));
-
-        public static Stream GetLetter(AbstractUser user)
-            => GetFile(user, GetFullFileName(user.id, "Letter"));
-
-        public static Stream GetTranscripts(AbstractUser user)
-            => GetFile(user, GetFullFileName(user.id, "Transcripts"));
-
-        #endregion
+        public static Stream GetFile(AbstractUser user, FileTypes type)
+            => LoadFile(user, GetFullFileName(user.id, type.ToString()));
+        
 
 
         private static void SaveFile(AbstractUser user, string filename, Stream fileStream)
@@ -63,7 +41,7 @@ namespace Model.Data
         }
 
 
-        private static Stream GetFile(AbstractUser user, string filename)
+        private static Stream LoadFile(AbstractUser user, string filename)
         {
             if (Instance.UsersFiles.ContainsKey(user) && Instance.UsersFiles[user].Contains(filename))
                 return File.OpenRead(GetFullFileName(user.id, filename));
@@ -73,4 +51,13 @@ namespace Model.Data
 
     }
 
+    public enum FileTypes
+    {
+        CV,
+        Photo,
+        Passport,
+        Letter,
+        Transcripts
+
+    }
 }
