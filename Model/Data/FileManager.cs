@@ -12,8 +12,12 @@ namespace Model.Data
 
         public const string RootStorageDirectory = "Storage" ;
 
-        private static string GetFullFileName(int id, string name) => $"{RootStorageDirectory}/{id}/{name}";
+        private static string GetFullFileName(int id, string name) => $"{RootStorageDirectory}/{id}/{name}.bytes";
 
+        public FileManager()
+        {
+            UsersFiles = new Dictionary<AbstractUser, List<string>>();
+        }
 
         public static void SubmitFile(AbstractUser user, FileTypes type, Stream fileStream)
             => SaveFile(user, GetFullFileName(user.id, type.ToString()), fileStream);
@@ -26,6 +30,7 @@ namespace Model.Data
 
         private static void SaveFile(AbstractUser user, string filename, Stream fileStream)
         {
+            Directory.CreateDirectory(filename.Remove(filename.LastIndexOf('/')));
             using (var file = File.Create(filename))
             {
                 fileStream.Seek(0, SeekOrigin.Begin);
@@ -33,7 +38,7 @@ namespace Model.Data
             }
 
             //todo handle errors
-            if (Instance.UsersFiles.ContainsKey(user))
+            if (!Instance.UsersFiles.ContainsKey(user))
                 Instance.UsersFiles.Add(user,new List<string>());
 
             Instance.UsersFiles[user].Add(filename);
@@ -44,7 +49,7 @@ namespace Model.Data
         private static Stream LoadFile(AbstractUser user, string filename)
         {
             if (Instance.UsersFiles.ContainsKey(user) && Instance.UsersFiles[user].Contains(filename))
-                return File.OpenRead(GetFullFileName(user.id, filename));
+                return File.OpenRead(filename);
 
             throw new Exception("No such file was found!");
         }
