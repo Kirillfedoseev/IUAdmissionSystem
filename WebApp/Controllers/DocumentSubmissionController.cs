@@ -25,8 +25,9 @@ namespace WebApp.Controllers
         }
 
         [HttpPost("dashboard/photo")]
-        public void UploadPhoto([FromBody] FileData data, string bytes)
+        public void UploadPhoto([FromBody] FileData data, [FromBody] string bytes)
         {
+            
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
