@@ -28,8 +28,11 @@ namespace Model.Authentication
         {
             public UserDoesNotExists(AuthData authData) : base("The user doent's exists!") => _authData = authData;
         }
-        
-             
+
+        public class UserAlreadyExists : AuthExceptions
+        {
+            public UserAlreadyExists(AuthData authData) : base("The user already exists!") => _authData = authData;
+        }
     }
 
     public class TokenExceptions : Exception

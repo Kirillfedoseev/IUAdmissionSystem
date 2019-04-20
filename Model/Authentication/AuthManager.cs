@@ -55,6 +55,9 @@ namespace Model.Authentication
         /// <returns>Authenticated Token</returns>
         public static TokenData RegisterUser(AuthData authData, RootEnum[] roots)
         {
+            if(Instance._usersAuthData.Count(n => n.Key.Equals(authData)) != 0) 
+                throw  new AuthExceptions.UserAlreadyExists(authData);
+
             AbstractUser user = new TestUser(roots); //todo factory of creating users 
             Instance._usersAuthData.Add(authData, user);
             try
@@ -79,23 +82,34 @@ namespace Model.Authentication
         {
             Instance._register.FreeToken(authToken);
         }
-     
-        
+
+
         /// <summary>
         /// Auth tokens has TTL, and after validating TTL updates, 
         /// If register doesn't contain authToken, then you must Auth again 
         /// </summary>
         /// <param name="authToken">authenticate token, which was given with authentication</param>
-        /// <exception cref="TokenExceptions.TokenDoesNotExists">If registed doesn't have such token</exception>
-        /// <exception cref="TokenExceptions.TokenExpired">If token in register, but expired</exception>
+        /// <exception cref="TokenExceptions.TokenDoesNotExists">If register doesn't have such token, return false</exception>
+        /// <exception cref="TokenExceptions.TokenExpired">If token in register, but expired, return false</exception>
         /// <returns>true if authToken valid, false if not</returns>
         public static bool ValidateAuthToken(TokenData authToken)
         {
-            return Instance._register.ValidateAuthToken(authToken) != null;
+            try
+            {
+                return Instance._register.ValidateAuthToken(authToken) != null;
+            }
+            catch (TokenExceptions.TokenDoesNotExists e)
+            {
+                return false;
+            }
+            catch (TokenExceptions.TokenExpired e)
+            {
+                return false;
+            }
         }
 
         /// <summary>
-        /// Check on user existance
+        /// Check on user existence
         /// </summary>
         /// <param name="authData">authentication data of some user</param>
         /// <returns>User with such auth data</returns>
