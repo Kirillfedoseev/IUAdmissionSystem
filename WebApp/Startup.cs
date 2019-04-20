@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,8 +23,22 @@ namespace WebApp
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddMvc(options => options.Filters.Add<OriginHeaderFilter>()).SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
-            services.AddCors(options => options.AddDefaultPolicy(new CorsPolicy()));
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowMyOrigin",
+                    builder => builder
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+            });
+
+            services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new CorsAuthorizationFilterFactory("AllowMyOrigin"));
+            });
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
             {
@@ -55,11 +69,8 @@ namespace WebApp
                     name: "default",
                     template: "{controller}/{action=Index}/{id?}");
             });
-            app.UseCors(builder =>
-                builder.AllowAnyOrigin()
-                    .AllowAnyHeader()
-                    .AllowAnyMethod()
-                    .AllowCredentials());
+
+            app.UseCors("AllowMyOrigin");
             app.UseSpa(spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
