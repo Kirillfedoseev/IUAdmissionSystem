@@ -4,7 +4,7 @@ using System.IO;
 using Model.Support;
 using Model.Users;
 
-namespace Model.Data
+namespace Model.Files
 {
     class FileManager:Singletone<FileManager>
     {

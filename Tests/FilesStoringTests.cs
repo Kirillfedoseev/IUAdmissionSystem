@@ -1,7 +1,9 @@
 ﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Model;
 using Model.Authentication;
 using Model.Data;
+using Model.Files;
 using Model.Users;
 
 namespace Tests

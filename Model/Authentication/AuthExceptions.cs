@@ -1,4 +1,5 @@
 ﻿using System;
+using Model.Data;
 
 namespace Model.Authentication
 {

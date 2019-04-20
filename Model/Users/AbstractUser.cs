@@ -34,4 +34,55 @@ namespace Model.Users
         }
         
     }
+
+    class AdminUser : AbstractUser
+    {
+        public AdminUser() : base(new RootEnum[0])
+        {
+        }
+    }
+
+    class ManagerUser : AbstractUser
+    {
+        public ManagerUser(RootEnum[] roots) : base(new RootEnum[0])
+        {
+        }
+    }
+
+
+    public class CandidateUser : AbstractUser
+    {
+
+        public AdmissionStatus Status { get; set; }
+
+        public CandidateUser() : base(new RootEnum[0])
+        {
+        }
+        public enum AdmissionStatus
+        {
+            Registered,
+            PassedTests,
+            WaitingInterview,
+            PassingInterview,
+            Passed,
+            Rejected,
+        }
+
+       
+    }
+
+    public class InterviewerUser : AbstractUser
+    {
+        public InterviewerUser() : base(new RootEnum[0])
+        {
+        }
+    }
+
+    public class TestUser : AbstractUser
+    {
+        public TestUser(RootEnum[] roots) : base(roots)
+        {
+
+        }
+    }
 }

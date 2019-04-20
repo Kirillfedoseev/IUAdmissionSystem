@@ -1,5 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model.Authentication;
+using Model.Data;
 using Model.Users;
 
 namespace Tests

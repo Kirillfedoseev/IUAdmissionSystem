@@ -1,8 +1,11 @@
 ﻿using System.IO;
 using Model.Authentication;
+using Model.Data;
+using Model.Files;
+using Model.Interviews;
 using Model.Users;
 
-namespace Model.Data
+namespace Model
 {
     public class DataModelFacade
     {
@@ -27,6 +30,14 @@ namespace Model.Data
 
         public static Stream GetFile(TokenData authToken, FileTypes type)
             => FileManager.GetFile(GetUser(authToken), type);
+
+
+        public static void UpdateCandidateStatus(TokenData authToken, int id, CandidateUser.AdmissionStatus status)
+        {
+            if(AuthManager.ValidateAuthToken(authToken)) 
+                throw new TokenExceptions.TokenDoesNotExists(authToken);
+            InterviewManager.GetCandidate(id).Status = status;
+        }
 
 
         private static AbstractUser GetUser(TokenData authToken) 

@@ -10,6 +10,8 @@ using Model.Authentication;
 using Model.Users;
 using Model.Data;
 using System.Text;
+using Model;
+using Model.Files;
 
 namespace WebApp.Controllers
 {
