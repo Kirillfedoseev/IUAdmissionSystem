@@ -1,7 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Net.Http;
-using System.Text;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
@@ -11,35 +9,50 @@ using Model.Users;
 
 namespace WebApp.Controllers
 {
+    [EnableCors("AllowMyOrigin")]
     [Route("[controller]")]
     public class DashBoardController : Controller
     {
 
-
-        // POST dashboard/saveProfile
-        [EnableCors]
         [HttpPost("profile")]
-        public string SaveProfile([FromBody] UserProfile data)
+        public void SaveProfile([FromBody] UserProfile data)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-            DataModelFacade.SetUserProfile(token, data);
-            
-            //TODO: Change Data return type to void and delete after test:
-            return "success";
+            DataModelFacade.SetUserProfile(token, data);           
         }
 
-        [EnableCors]
-        [HttpPost("profileget")]
+
+        [HttpGet("profile")]
         public UserProfile GetProfile()
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-            return DataModelFacade.GetUserProfile(token);
-           
+            return DataModelFacade.GetUserProfile(token);      
         }
 
-        [EnableCors]
+
+        [HttpPost("photo")]
+        public void SavePhoto([FromBody] FileData data)
+        {
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+        }
+
+
+        [HttpGet("photo")]
+        public FileData GetPhoto()
+        {
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+
+            return null;
+        }
+
+
+
+
+
         [HttpPost("uploadFile")]
         public string UploadFile([FromBody] FileData data)
         {

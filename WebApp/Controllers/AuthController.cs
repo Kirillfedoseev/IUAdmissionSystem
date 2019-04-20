@@ -10,20 +10,19 @@ using Model.Users;
 
 namespace WebApp.Controllers
 {
+    [EnableCors("AllowMyOrigin")]
     [Route("[controller]")]
     public class AuthController : Controller
     {
 
 
         // POST User Authorization
-        [EnableCors]
         [HttpPost]
         public TokenData Authorization([FromBody]AuthData data)
         {
            return AuthManager.AuthUser(data);
         }
 
-        [EnableCors]
         [HttpPost("registration")]
         public TokenData Registration([FromBody] RegistrationData data)
         {
@@ -31,12 +30,16 @@ namespace WebApp.Controllers
         }
 
                
-        [EnableCors]
         [HttpPost("logout")]
         public void LogOut([FromBody] TokenData token)
         {
             AuthManager.LogOutUser(token);
         }
 
+
+        protected override void Dispose(bool disposing)
+        {
+            AuthManager.Instance.Dispose();
+        }
     }
 }
