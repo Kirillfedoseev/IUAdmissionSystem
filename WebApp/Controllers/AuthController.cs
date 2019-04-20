@@ -80,7 +80,7 @@ namespace WebApp.Controllers
 
         protected override void Dispose(bool disposing)
         {
-            AuthManager.Instance.Dispose();
+            
         }
     }
 }
