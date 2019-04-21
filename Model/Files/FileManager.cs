@@ -67,11 +67,10 @@ namespace Model.Files
                 throw new ArgumentNullException(nameof(fileStream), "FileStream was null");
 
             try
-            {             
-                byte[] byteArray = Encoding.ASCII.GetBytes(fileStream);
-                Stream stream = new MemoryStream(byteArray);
+            { 
+                byte[] byteArray = Encoding.UTF8.GetBytes(fileStream);
+                SaveFile(GetFullFileName(user.id, info.Type), byteArray);
 
-                SaveFile(GetFullFileName(user.id, info.Type), stream);
             }
             catch (Exception e)
             {
@@ -80,8 +79,11 @@ namespace Model.Files
 
             if (!Instance.UsersFiles.ContainsKey(user))
                     Instance.UsersFiles.Add(user, new List<FileData>());
+            FileData a;
 
-                Instance.UsersFiles[user].Add(info);         
+            if ((a = Instance.UsersFiles[user].SingleOrDefault(n=>n.Type == info.Type)) != null)
+                a.FileName = info.FileName;
+            else Instance.UsersFiles[user].Add(info);         
         }
 
 
@@ -113,16 +115,12 @@ namespace Model.Files
         /// </summary>
         /// <param name="filename">filename and also the path</param>
         /// <param name="fileStream">stream, from which bytes are reading to be written</param>
-        private static void SaveFile(string filename, Stream fileStream)
+        private static void SaveFile(string filename, byte[] fileStream)
         {
             lock (Instance._lock)
             {
                 Directory.CreateDirectory(filename.Remove(filename.LastIndexOf('/')));
-                using (var file = File.Create(filename))
-                {
-                    fileStream.Seek(0, SeekOrigin.Begin);
-                    fileStream.CopyTo(file);
-                }
+                File.WriteAllBytes(filename, fileStream);
             }                 
         }
 
@@ -136,11 +134,9 @@ namespace Model.Files
         {
             lock (Instance._lock)
             {
-                using (var reader = new StreamReader(File.OpenRead(filename)))
-                {
-                    string fileString = reader.ReadToEnd();
-                    return fileString;
-                }
+                byte[] bytes = File.ReadAllBytes(filename);
+                string fileString = Encoding.UTF8.GetString(bytes);
+                return fileString;
             }
         }
 
