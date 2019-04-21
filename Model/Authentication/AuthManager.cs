@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Model.Data;
 using Model.Support;
 using Model.Users;
 
@@ -58,7 +59,7 @@ namespace Model.Authentication
             if(Instance._usersAuthData.Count(n => n.Key.Equals(authData)) != 0) 
                 throw  new AuthExceptions.UserAlreadyExists(authData);
 
-            AbstractUser user = new TestUser(roots); //todo factory of creating users 
+            AbstractUser user = UsersManager.CreateUser(roots); //todo factory of creating users 
             Instance._usersAuthData.Add(authData, user);
             try
             {

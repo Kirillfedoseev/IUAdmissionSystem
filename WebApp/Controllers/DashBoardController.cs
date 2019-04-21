@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Text;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Model;
 using Model.Authentication;
 using Model.Data;
 using Model.Users;
@@ -48,12 +49,6 @@ namespace WebApp.Controllers
             throw new NotImplementedException();
 
         }
-
-
-      
-
-
-
 
 
     }

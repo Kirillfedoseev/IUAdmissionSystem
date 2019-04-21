@@ -1,7 +1,6 @@
-﻿using Model.Data;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 
-namespace Model.Authentication
+namespace Model.Data
 {
     public class AuthData:IData
     {

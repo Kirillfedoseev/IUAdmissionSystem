@@ -41,4 +41,54 @@
         
 
     }
+
+    class TestData : IData
+    {
+        public string Type { get; }
+        public string Data { get; }
+
+
+
+        public string SerializeToJSON()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IData DeserializeFromJSON(string json)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
+    public class ProgramData : IData
+    {
+        
+
+        public int ID { get; }
+
+        public string Type => typeof(ProgramData).Name;
+
+        public string Data { get; }
+
+        public string ProgramName { get; set; }
+
+        public string Description { get; set; }
+
+        public ProgramData(int id, string programName, string description)
+        {
+            ID = id;
+            ProgramName = programName;
+            Description = description;
+        }
+
+        public string SerializeToJSON()
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public IData DeserializeFromJSON(string json)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }
