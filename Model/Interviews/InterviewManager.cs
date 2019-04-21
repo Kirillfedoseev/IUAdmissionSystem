@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Model.Authentication;
 using Model.Data;
 using Model.Support;
 using Model.Users;
@@ -9,49 +9,77 @@ namespace Model.Interviews
 {
     public class InterviewManager:Singletone<InterviewManager>
     {
-        private readonly List<CandidateUser> _readyCandidates;
+        private readonly List<int> _readyCandidates;
 
-        private readonly Dictionary<CandidateUser, InterviewerUser> _interviewPairs;
-
-        private readonly List<CandidateUser> _interviewResults;
-
+        private readonly List<InterviewInfoData> _interviews;
 
         public InterviewManager()
         {
-            _interviewPairs = new Dictionary<CandidateUser, InterviewerUser>();
-            _readyCandidates = new List<CandidateUser>();
+            _interviews = new List<InterviewInfoData>();
+            _readyCandidates = new List<int>();
         }
 
-        public static void CreateInterview( int candidateID, int interviewerID, string time) //TODO: Add time saving
+        public static void CreateInterview(InterviewInfoData info)
         {
-            CandidateUser candidate = Instance._readyCandidates.SingleOrDefault(n => n.id == candidateID);
+            if(!UsersManager.IsUserExistsByID<CandidateUser>(info.CandidateID))
+                throw new Exception("Candidate doesn't exists!");
 
-            InterviewerUser interviewer = UsersManager.GetUserByID<InterviewerUser>(interviewerID);
-            Instance._interviewPairs.Add(candidate,interviewer); //todo checks on existance              
-            Instance._readyCandidates.Remove(candidate);
+            if (!UsersManager.IsUserExistsByID<InterviewerUser>(info.InterviewerID))
+                throw new Exception("Interviewer doesn't exists!");
+
+            if (Instance._readyCandidates.Any(n => n == info.CandidateID))
+            {
+                UsersManager.GetUserByID<CandidateUser>(info.CandidateID).Status =
+                    CandidateUser.AdmissionStatus.PassingInterview;
+
+                Instance._interviews.Add(info);
+                Instance._readyCandidates.Remove(info.CandidateID);
+            }
+            else
+            {
+                if (UsersManager.GetUserByID<CandidateUser>(info.CandidateID).Status ==
+                    CandidateUser.AdmissionStatus.WaitingInterview)
+                {
+                    Instance._interviews.Add(info);
+                }
+                else
+                {
+                    throw new Exception("The Candidate doesn't ready for interview!");
+                }
+            }
+
+            
         }
 
-        public static void DeleteInterview(int candidateID, int interviewerID)
+        public static void DeleteInterview(InterviewInfoData info)
         {
-            CandidateUser candidate = Instance._interviewPairs.SingleOrDefault(n => n.Key.id == candidateID).Key;
-            Instance._interviewPairs.Remove(candidate);
-            candidate.Status = CandidateUser.AdmissionStatus.WaitingInterview;
-            Instance._readyCandidates.Add(candidate);
+            if (Instance._interviews.Remove(info))
+            {
+                UsersManager.GetUserByID<CandidateUser>(info.CandidateID).Status = CandidateUser.AdmissionStatus.WaitingInterview;
+                Instance._readyCandidates.Add(info.CandidateID);
+            }          
         }
-
 
 
         public static void AddCandidateToInterviewQueue(int candidateID)
         {
-            var candidate = UsersManager.GetUserByID<CandidateUser>(candidateID);
-            candidate.Status = CandidateUser.AdmissionStatus.WaitingInterview;
-            Instance._readyCandidates.Add(candidate);
+            if (!UsersManager.IsUserExistsByID<CandidateUser>(candidateID))
+                throw new Exception("Candidate doesn't exists!");
+
+            UsersManager.GetUserByID<CandidateUser>(candidateID).Status = CandidateUser.AdmissionStatus.WaitingInterview;
+
+            Instance._readyCandidates.Add(candidateID);
         }
 
         public static void SetInterviewResults(int candidateID, InterviewStatus status)
         {
-            CandidateUser candidate = Instance._interviewPairs.SingleOrDefault(n => n.Value.id == candidateID).Key;
-            Instance._interviewPairs.Remove(candidate);
+            CandidateUser candidate = UsersManager.GetUserByID<CandidateUser>(candidateID);
+
+            if (candidate == null)
+                throw new Exception("Candidate doesn't exists!");
+
+            Instance._interviews.RemoveAll(n => n.CandidateID == candidateID);
+
             switch (status)
             {
                 case InterviewStatus.Passed:
@@ -66,17 +94,16 @@ namespace Model.Interviews
 
 
         public static CandidateUser[] GetCandidateUserList() 
-            => Instance._readyCandidates.ToArray();
+            => UsersManager.GetUsersByIDs<CandidateUser>(Instance._readyCandidates.ToArray());
 
-        public static CandidateUser[] GetCandidateUserList(TokenData tokenData)
-            => Instance._interviewPairs.Where(n => n.Value.id == AuthManager.Instance[tokenData].id).Select(n => n.Key).ToArray();
+        public static CandidateUser[] GetCandidateUserList(int interviewerId)
+            => UsersManager.GetUsersByIDs<CandidateUser>(Instance._interviews.Where(n => n.InterviewerID == interviewerId).Select(n=>n.CandidateID).ToArray());
 
 
         public enum InterviewStatus
         {
             Passed,
             Fail,
-
         }
 
     }

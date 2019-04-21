@@ -18,16 +18,14 @@ namespace WebApp.Controllers
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
             
-            //TODO: CHECK
-            throw new NotImplementedException();
-            return InterviewManager.GetCandidateUserList(token);
+            return InterviewManager.GetCandidateUserList();
         }
 
         [HttpPost("interviewer/updateGrade")]
         public void UpdateGrade([FromBody] GradeInfoData data) 
         {
             var tokenString = Request.Headers["Authorization"];
-            var token = new TokenData(tokenString);
+            var token = new TokenData(tokenString); //todo check token 
 
             InterviewManager.InterviewStatus status;
             switch (data.Grade)
@@ -69,7 +67,7 @@ namespace WebApp.Controllers
             Console.WriteLine("///////////////////IMPORTANT//////////////////// \n Check Token here!");
 
 
-            InterviewManager.CreateInterview(data.CandidateID,data.InterviewerID, data.Time);
+            InterviewManager.CreateInterview(data);
 
         }
 
@@ -82,8 +80,8 @@ namespace WebApp.Controllers
             //todo checks and token validation
             Console.WriteLine("///////////////////IMPORTANT//////////////////// \n Check Token here!");
 
-            InterviewManager.DeleteInterview(data.CandidateID, data.InterviewerID);
-            InterviewManager.CreateInterview(data.CandidateID, data.InterviewerID, data.Time);
+            InterviewManager.DeleteInterview(data);
+            InterviewManager.CreateInterview(data);
         }
 
         [HttpPost("manager/deleteInterview")]
@@ -95,7 +93,7 @@ namespace WebApp.Controllers
             //todo checks and token validation
             Console.WriteLine("///////////////////IMPORTANT//////////////////// \n Check Token here!");
 
-            InterviewManager.DeleteInterview(data.CandidateID, data.InterviewerID);
+            InterviewManager.DeleteInterview(data);
         }
 
 

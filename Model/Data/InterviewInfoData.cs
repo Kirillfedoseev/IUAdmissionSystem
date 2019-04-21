@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Model.Data
 {
     public class InterviewInfoData : IData
     {
 
-        public int CandidateID; //TODO: check type
-        public int InterviewerID; //TODO: check type
+        public int CandidateID { get; set; }
+
+        public int InterviewerID { get; set; } //TODO: check type
+
         public string Time;
 
         public string Type => throw new NotImplementedException();
@@ -23,6 +23,13 @@ namespace Model.Data
         public string SerializeToJSON()
         {
             throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
+        {
+            var a = obj as InterviewInfoData;
+            if (a == null) return false;
+            return a.CandidateID == CandidateID && a.InterviewerID == InterviewerID && a.Time.Equals(Time);
         }
     }
 }

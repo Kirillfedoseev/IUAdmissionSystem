@@ -35,12 +35,28 @@ namespace Model.Users
             return user;
         }
 
+
         public static AbstractUser GetUserByID(int id) 
             => Instance._specificUserLists.Values.SelectMany(n => n).Single(i => i.id == id);
 
 
         public static T GetUserByID<T>(int id) where T : AbstractUser 
             => Instance._specificUserLists[typeof(T)].SingleOrDefault(i => i.id == id) as T;
+
+        public static AbstractUser[] GetUsersByIDs(int[] ids)
+            => Instance._specificUserLists.Values.SelectMany(n => n).Where(i => ids.Contains(i.id)).ToArray();
+
+
+        public static T[] GetUsersByIDs<T>(int[] ids) where T : AbstractUser
+            => Instance._specificUserLists[typeof(T)].Where(i => ids.Contains(i.id)) as T[];
+
+
+        public static bool IsUserExistsByID(int id)
+            => Instance._specificUserLists.Values.SelectMany(n => n).Any(i => i.id == id);
+
+
+        public static bool IsUserExistsByID<T>(int id) where T : AbstractUser
+            => Instance._specificUserLists[typeof(T)].Any(i => i.id == id);
 
 
         public static void DeleteUserById(int id)
