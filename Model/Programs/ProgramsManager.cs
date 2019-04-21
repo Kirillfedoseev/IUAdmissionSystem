@@ -55,6 +55,12 @@ namespace Model.Programs
 
         }
 
+        public static TestData[] GetCandidateTests(int candidateId) 
+            => GetTests(GetCandidateProgram(candidateId).Id);
+
+        public static TestData[] GetTests(int programId)
+            => TestsManager.GetTests(Instance._testAssigningToPrograms[programId].Select(n => n.ProgramId).ToArray());
+
 
         public static void AssignTestToProgram(TestAssigningData data)
         {
