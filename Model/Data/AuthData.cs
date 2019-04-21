@@ -3,7 +3,9 @@ using System;
 
 namespace Model.Data
 {
+
     public class AuthData : IData
+
     {
         
         public virtual string Type => typeof(AuthData).ToString();

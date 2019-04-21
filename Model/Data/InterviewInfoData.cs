@@ -2,7 +2,9 @@
 
 namespace Model.Data
 {
+#pragma warning disable CS0659 // "InterviewInfoData" переопределяет Object.Equals(object o), но не переопределяет Object.GetHashCode().
     public class InterviewInfoData : IData
+#pragma warning restore CS0659 // "InterviewInfoData" переопределяет Object.Equals(object o), но не переопределяет Object.GetHashCode().
     {
 
         public int CandidateID { get; set; }

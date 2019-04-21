@@ -1,25 +1,24 @@
-﻿using System.Collections.Generic;
-using Model.Data;
+﻿using Model.Data;
 
-namespace Model.Tests
+namespace Model.Programs
 {
-    public class Test:IData
+    public class ProgramData:IData
     {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Course { get; set; }
+
+        public string Description { get; set; }
+
+
         public string Type => GetType().ToString();
-        
+
+
         public string Data { get; }
-        
 
-        public string Name;
-                
-        public string Description { get; protected set; }
-        
-        //todo add other properties
 
-        public List<ITestableItem> testItems;
-        
-        
-        
         public string SerializeToJSON()
         {
             throw new System.NotImplementedException();
@@ -29,5 +28,8 @@ namespace Model.Tests
         {
             throw new System.NotImplementedException();
         }
+        
+        
     }
+    
 }

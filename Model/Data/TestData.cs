@@ -1,59 +1,50 @@
 ﻿namespace Model.Data
 {
-public class TestData : IData
+    public class TestData : IData
     {
+        public int Id { get; set; }
 
-        public int TestId { get; set; }
         public string Name { get; set; }
-        public string Program { get; set; }
+
         public Question[] Questions { get; set; }
 
-        public class Question : IData
+        public struct Question
         {
-            public int QuestionID;
+            public int Id { get; set; }
+
             public string QuestionText;
-            public Answer[] Anwers;
-            #region IData
-            public string Type { get; }
-            public string Data { get; }
 
-            public string SerializeToJSON()
+            public Answer[] Answers;
+
+            public struct Answer 
             {
-                throw new System.NotImplementedException();
+                public int Id { get; set; }
+
+                public string AnswerText { get; set; }
+
+                public bool IsCorrect { get; set; }             
             }
 
-            public IData DeserializeFromJSON(string json)
-            {
-                throw new System.NotImplementedException();
-            }
-            #endregion
         }
 
-        public class Answer : IData
+        public void SetIds(int id)
         {
+            Id = id;
 
-            public int AnswerID;
-            public string AnswerText { get; set; }
-            #region IData
-            public string Type { get; }
-            public string Data { get; }
-
-            public string SerializeToJSON()
+            for (var questionId = 0; questionId < Questions.Length; questionId++)
             {
-                throw new System.NotImplementedException();
-            }
+                Question question = Questions[questionId];
+                question.Id = questionId;
 
-            public IData DeserializeFromJSON(string json)
-            {
-                throw new System.NotImplementedException();
+                for (int answerId = 0; answerId < question.Answers.Length; answerId++)
+                {
+                    question.Answers[answerId].Id = answerId;
+                }
             }
-            #endregion
         }
 
         public string Type { get; }
         public string Data { get; }
-
-
 
         public string SerializeToJSON()
         {
