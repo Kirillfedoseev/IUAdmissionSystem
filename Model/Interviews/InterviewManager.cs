@@ -36,7 +36,7 @@ namespace Model.Interviews
         /// </summary>
         /// <returns>Array of Candidates</returns>
         public static CandidateUser[] GetCandidateUserList()
-            => UsersManager.GetUsersByIDs<CandidateUser>(Instance._readyCandidates.ToArray());
+            => UsersManager.GetUsers<CandidateUser>(Instance._readyCandidates.ToArray());
 
         /// <summary>
         /// Get all Candidate, which are assigned for particular interviewer
@@ -44,7 +44,7 @@ namespace Model.Interviews
         /// <param name="interviewerId">Id of Interviewer User</param>
         /// <returns>Array of Candidates</returns>
         public static CandidateUser[] GetCandidateUserList(int interviewerId)
-            => UsersManager.GetUsersByIDs<CandidateUser>(Instance._interviews.Where(n => n.InterviewerID == interviewerId).Select(n => n.CandidateID).ToArray());
+            => UsersManager.GetUsers<CandidateUser>(Instance._interviews.Where(n => n.InterviewerID == interviewerId).Select(n => n.CandidateID).ToArray());
 
 
         /// <summary>
@@ -56,15 +56,15 @@ namespace Model.Interviews
         /// <exception cref="CandidateDoesntExistsException">if candidate id doesn't exists</exception>
         public static void CreateInterview(InterviewInfoData info)
         {
-            if(!UsersManager.IsUserExistsById<CandidateUser>(info.CandidateID))
+            if(!UsersManager.IsUserExists<CandidateUser>(info.CandidateID))
                 throw new CandidateDoesntExistsException(info.CandidateID);
 
-            if (!UsersManager.IsUserExistsById<InterviewerUser>(info.InterviewerID))
+            if (!UsersManager.IsUserExists<InterviewerUser>(info.InterviewerID))
                 throw new InterviewerDoesntExistsException(info.InterviewerID);
 
             if (Instance._readyCandidates.Any(n => n == info.CandidateID))
             {
-                UsersManager.GetUserById<CandidateUser>(info.CandidateID).Status =
+                UsersManager.GetUser<CandidateUser>(info.CandidateID).Status =
                     PassingInterview;
 
                 Instance._interviews.Add(info);
@@ -72,10 +72,10 @@ namespace Model.Interviews
             }
             else
             {
-                if (UsersManager.GetUserById<CandidateUser>(info.CandidateID).Status ==
+                if (UsersManager.GetUser<CandidateUser>(info.CandidateID).Status ==
                     WaitingInterview)
                 {
-                    UsersManager.GetUserById<CandidateUser>(info.CandidateID).Status =
+                    UsersManager.GetUser<CandidateUser>(info.CandidateID).Status =
                         PassingInterview;
 
                     Instance._interviews.Add(info);
@@ -98,16 +98,16 @@ namespace Model.Interviews
         /// <exception cref="CandidateDoesntExistsException">if candidate id doesn't exists</exception>
         public static void DeleteInterview(InterviewInfoData info)
         {
-            if (!UsersManager.IsUserExistsById<CandidateUser>(info.CandidateID))
+            if (!UsersManager.IsUserExists<CandidateUser>(info.CandidateID))
                 throw new CandidateDoesntExistsException(info.CandidateID);
 
-            if (!UsersManager.IsUserExistsById<InterviewerUser>(info.InterviewerID))
+            if (!UsersManager.IsUserExists<InterviewerUser>(info.InterviewerID))
                 throw new InterviewerDoesntExistsException(info.InterviewerID);
 
 
             if (!Instance._interviews.Remove(info)) return;
 
-            UsersManager.GetUserById<CandidateUser>(info.CandidateID).Status = WaitingInterview;
+            UsersManager.GetUser<CandidateUser>(info.CandidateID).Status = WaitingInterview;
             Instance._readyCandidates.Add(info.CandidateID);
         }
 
@@ -119,7 +119,7 @@ namespace Model.Interviews
         /// <exception cref="CandidateDoesntExistsException">if candidate id doesn't exists</exception>
         public static void AddCandidateToInterviewQueue(int candidateId)
         {
-            var candidate = UsersManager.GetUserById<CandidateUser>(candidateId);
+            var candidate = UsersManager.GetUser<CandidateUser>(candidateId);
 
             if (candidate == null)
                 throw new CandidateDoesntExistsException(candidateId);
@@ -139,7 +139,7 @@ namespace Model.Interviews
         /// <exception cref="CandidateDoesntExistsException">if candidate id doesn't exists</exception>
         public static void SetInterviewResults(int candidateId, InterviewStatus status)
         {
-            CandidateUser candidate = UsersManager.GetUserById<CandidateUser>(candidateId);
+            CandidateUser candidate = UsersManager.GetUser<CandidateUser>(candidateId);
 
             if (candidate == null)
                 throw new CandidateDoesntExistsException(candidateId);

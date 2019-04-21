@@ -58,10 +58,7 @@ namespace Model.Users
 
             return user;
         }
-
-
-        public static AbstractUser GetUserById(int id) 
-            => Instance._specificUserLists.Values.SelectMany(n => n).Single(i => i.Id == id);
+        
 
         /// <summary>
         /// Get user's profile by token
@@ -76,9 +73,10 @@ namespace Model.Users
         public static void SetUserProfile(TokenData authToken, UserProfile profile)
             => GetUser(authToken).Profile = profile;
 
+
         public static void SetUserStatus(StatusUpdateData data)
         {
-            CandidateUser user = GetUserById<CandidateUser>(data.CandidateId);
+            CandidateUser user = GetUser<CandidateUser>(data.CandidateId);
 
             if (user == null)
                 throw new InterviewException.CandidateDoesntExistsException(data.CandidateId);
@@ -106,32 +104,32 @@ namespace Model.Users
         private static AbstractUser GetUser(TokenData authToken)
             => AuthManager.Instance[authToken];
 
-        public static T GetUserById<T>(int id) where T : AbstractUser 
+
+        public static AbstractUser GetUser(int id)
+            => Instance._specificUserLists.Values.SelectMany(n => n).Single(i => i.Id == id);
+
+
+        public static T GetUser<T>(int id) where T : AbstractUser 
             => Instance._specificUserLists[typeof(T)].SingleOrDefault(i => i.Id == id) as T;
 
-        public static AbstractUser[] GetUsersByIds(int[] ids)
+
+        public static AbstractUser[] GetUsers(int[] ids)
             => Instance._specificUserLists.Values.SelectMany(n => n).Where(i => ids.Contains(i.Id)).ToArray();
 
 
-        public static T[] GetUsersByIDs<T>(int[] ids) where T : AbstractUser
+        public static T[] GetUsers<T>(int[] ids) where T : AbstractUser
             => Instance._specificUserLists[typeof(T)].Where(i => ids.Contains(i.Id)) as T[];
 
 
-        public static bool IsUserExistsById(int id)
+        public static bool IsUserExists(int id)
             => Instance._specificUserLists.Values.SelectMany(n => n).Any(i => i.Id == id);
 
 
-        public static bool IsUserExistsById<T>(int id) where T : AbstractUser
+        public static bool IsUserExists<T>(int id) where T : AbstractUser
             => Instance._specificUserLists[typeof(T)].Any(i => i.Id == id);
 
 
-        public static void DeleteUserById(int id)
-        {
-            foreach (var list in Instance._specificUserLists.Values)
-            {
-                if(list.RemoveAll(n=> n.Id == id) > 0)
-                    break;
-            }
-        }
+        public static void DeleteUser(int id) 
+            => Instance._specificUserLists.Values.ToList().ForEach(n=>n.RemoveAll(i => i.Id == id));
     }
 }

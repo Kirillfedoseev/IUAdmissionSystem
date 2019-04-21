@@ -1,8 +1,4 @@
-﻿using System;
-using System.Data;
-using System.IO;
-using System.Net.Http;
-using Microsoft.AspNetCore.Cors;
+﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Model.Data;
 using Model.Users;
@@ -14,8 +10,6 @@ namespace WebApp.Controllers
     public class DashBoardController : Controller
     {
 
-
-        // POST dashboard/saveProfile
         [HttpPost("dashboard/profile")]
         public void SaveProfile([FromBody] UserProfile data)
         {
@@ -26,7 +20,6 @@ namespace WebApp.Controllers
 
             UsersManager.SetUserProfile(token, data);
         }
-
 
     
         [HttpGet("dashboard/profile")]
@@ -39,6 +32,7 @@ namespace WebApp.Controllers
             return UsersManager.GetUserProfile(token);          
         }
 
+
         [HttpPost("manager/candidateStatus")]
         public CandidateUser SetCandidateStatus([FromBody] StatusUpdateData status) //TODO: Change to CanditateStatus Data
         {   
@@ -49,10 +43,9 @@ namespace WebApp.Controllers
 
             UsersManager.SetUserStatus(status);
 
-            return UsersManager.GetUserById<CandidateUser>(status.CandidateId);
+            return UsersManager.GetUser<CandidateUser>(status.CandidateId);
 
         }
-
 
     }
 }
