@@ -69,7 +69,7 @@ namespace Model.Files
             try
             { 
                 byte[] byteArray = Encoding.UTF8.GetBytes(fileStream);
-                SaveFile(GetFullFileName(user.id, info.Type), byteArray);
+                SaveFile(GetFullFileName(user.Id, info.Type), byteArray);
 
             }
             catch (Exception e)
@@ -97,7 +97,7 @@ namespace Model.Files
         /// <returns>Wrapper, which contain FileData and it's representation in string</returns>
         public static FileDataWrapper GetFileData(AbstractUser user, string type)
         {
-            string filename = GetFullFileName(user.id, type);
+            string filename = GetFullFileName(user.Id, type);
 
             if (!Instance.UsersFiles.TryGetValue(user, out var list))
                 throw new FileException.UserDoesntHaveFilesException();

@@ -5,6 +5,7 @@ using Model.Interviews;
 using Model.Users;
 using System;
 using System.Net;
+using Model.Authentication;
 
 namespace WebApp.Controllers
 {
@@ -17,8 +18,9 @@ namespace WebApp.Controllers
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-            
-            return InterviewManager.GetCandidateUserList();
+            //todo token check
+            var interviewer = AuthManager.Instance[token];
+            return InterviewManager.GetCandidateUserList(interviewer.Id);
         }
 
         [HttpPost("interviewer/updateGrade")]

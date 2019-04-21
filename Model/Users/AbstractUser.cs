@@ -1,50 +1,49 @@
-﻿using System.Collections.Generic;
-
-namespace Model.Users
+﻿namespace Model.Users
 {
     public abstract class AbstractUser
     {
-        public readonly int id;
+        public readonly int Id;
 
           
         public UserProfile Profile { get; internal set; }
         
         
-        private List<RootEnum> Roots { get; set; }
+        private RootEnum RootType { get; set; }
 
 
         public string PhotoUrl { get; set; } //todo url to photo
 
 
-        protected AbstractUser(RootEnum[] roots)
+        protected AbstractUser(int id, RootEnum rootType)
         {
-            id = 1; //todo genrate id
+            Id = id;
+            RootType = rootType;
         }
       
         
         
         public override bool Equals(object obj)
         {
-            return obj is AbstractUser user && user.id == id;
+            return obj is AbstractUser user && user.Id == Id;
         }
 
         public bool HasRoot(RootEnum root)
         {
-            return Roots.Contains(root);
+            return root == RootType;
         }
         
     }
 
     class AdminUser : AbstractUser
     {
-        public AdminUser() : base(new RootEnum[0])
+        public AdminUser(int id) : base(id, RootEnum.Admin)
         {
         }
     }
 
     class ManagerUser : AbstractUser
     {
-        public ManagerUser(RootEnum[] roots) : base(new RootEnum[0])
+        public ManagerUser(int id) : base(id, RootEnum.Manager)
         {
         }
     }
@@ -55,8 +54,9 @@ namespace Model.Users
 
         public AdmissionStatus Status { get; set; }
 
-        public CandidateUser() : base(new RootEnum[0])
+        public CandidateUser(int id) : base(id, RootEnum.Candidate)
         {
+            Status = AdmissionStatus.Registered;
         }
         public enum AdmissionStatus
         {
@@ -73,16 +73,8 @@ namespace Model.Users
 
     public class InterviewerUser : AbstractUser
     {
-        public InterviewerUser() : base(new RootEnum[0])
+        public InterviewerUser(int id) : base(id, RootEnum.Interviewer)
         {
-        }
-    }
-
-    public class TestUser : AbstractUser
-    {
-        public TestUser(RootEnum[] roots) : base(roots)
-        {
-
         }
     }
 }

@@ -54,12 +54,12 @@ namespace Model.Authentication
         /// <param name="authData">login of the user (email) and password of the user (not encrypted)</param>
         /// <exception cref="AuthExceptions.RegistrationException">If something went wrong</exception>
         /// <returns>Authenticated Token</returns>
-        public static TokenData RegisterUser(AuthData authData, RootEnum[] roots)
+        public static TokenData RegisterUser(AuthData authData, RootEnum rootsType)
         {
             if(Instance._usersAuthData.Count(n => n.Key.Equals(authData)) != 0) 
                 throw  new AuthExceptions.UserAlreadyExists(authData);
 
-            AbstractUser user = UsersManager.CreateUser(roots); //todo factory of creating users 
+            AbstractUser user = UsersManager.CreateUser(rootsType); //todo factory of creating users 
             Instance._usersAuthData.Add(authData, user);
             try
             {
