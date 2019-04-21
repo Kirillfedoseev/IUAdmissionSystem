@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Model.Authentication;
 using Model.Data;
 using Model.Interviews;
 using Model.Users;
@@ -18,7 +19,12 @@ namespace WebApp.Controllers
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-            //todo token check
+
+              if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return null;
+            }
             var interviewer = AuthManager.Instance[token];
             return InterviewManager.GetCandidateUserList(interviewer.Id);
         }
@@ -28,6 +34,11 @@ namespace WebApp.Controllers
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString); //todo check token 
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return;
+            }
 
             InterviewManager.InterviewStatus status;
             switch (data.Grade)
@@ -51,9 +62,12 @@ namespace WebApp.Controllers
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-
-            //todo checks and token validation
-            Console.WriteLine("///////////////////IMPORTANT//////////////////// \n Check Token here!");
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return null;
+            }
+           
 
             return InterviewManager.GetCandidateUserList();
 
@@ -64,9 +78,12 @@ namespace WebApp.Controllers
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-
-            //todo checks and token validation
-            Console.WriteLine("///////////////////IMPORTANT//////////////////// \n Check Token here!");
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return;
+            }
+            
 
 
             InterviewManager.CreateInterview(data);
@@ -78,9 +95,12 @@ namespace WebApp.Controllers
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-
-            //todo checks and token validation
-            Console.WriteLine("///////////////////IMPORTANT//////////////////// \n Check Token here!");
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return;
+            }
+           
 
             InterviewManager.DeleteInterview(data);
             InterviewManager.CreateInterview(data);
@@ -92,8 +112,11 @@ namespace WebApp.Controllers
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            //todo checks and token validation
-            Console.WriteLine("///////////////////IMPORTANT//////////////////// \n Check Token here!");
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return;
+            }
 
             InterviewManager.DeleteInterview(data);
         }

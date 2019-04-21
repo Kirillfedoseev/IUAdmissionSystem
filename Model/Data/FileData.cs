@@ -6,7 +6,7 @@
 
         public string FileName { get; set; }
 
-        public string Data => throw new System.NotImplementedException();
+        public string Data { get; }
 
         public IData DeserializeFromJSON(string json)
         {
