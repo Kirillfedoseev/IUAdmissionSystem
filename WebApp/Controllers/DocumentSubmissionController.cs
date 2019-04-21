@@ -34,7 +34,7 @@ namespace WebApp.Controllers
         [HttpPost("dashboard/photo")]
         public void UploadPhoto([FromBody] FileDataWrapper input)
         {
-            
+
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
@@ -48,19 +48,15 @@ namespace WebApp.Controllers
             //Send file stream to DB
             //todo exceptions and token check
 
-            try
-            {
-                AbstractUser user = AuthManager.Instance[token];
-                FileManager.SubmitFile(user, input.Data, input.Bytes);
-                Response.StatusCode = (int)HttpStatusCode.OK;
-            }
-            catch ()
-            {
 
-            }
+            AbstractUser user = AuthManager.Instance[token];
+            FileManager.SubmitFile(user, input.Data, input.Bytes);
+            Response.StatusCode = (int)HttpStatusCode.OK;
+
+
         }
-        
-        
+
+
 
     }
 }

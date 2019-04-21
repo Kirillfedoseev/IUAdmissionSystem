@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Model.Authentication;
 using Model.Data;
 using Model.Users;
 
@@ -58,7 +59,7 @@ namespace WebApp.Controllers
 
         [HttpPost("manager/candidateStatus")]
 
-        public CandidateUser SetCandidateStatus([FromBody] StatusUpdateData status) //TODO: Change to CanditateStatus Data
+        public void SetCandidateStatus([FromBody] StatusUpdateData status) //TODO: Change to CanditateStatus Data
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -72,7 +73,7 @@ namespace WebApp.Controllers
 
             UsersManager.SetUserStatus(status);
 
-            return UsersManager.GetUser<CandidateUser>(status.CandidateId);
+            
 
         }
 
