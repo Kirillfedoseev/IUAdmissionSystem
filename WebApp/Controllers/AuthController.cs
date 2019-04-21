@@ -65,6 +65,11 @@ namespace WebApp.Controllers
         [HttpPost("logout")]
         public void LogOut([FromBody] TokenData token)
         {
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return;
+            }
             try
             {
                 AuthManager.LogOutUser(token);
@@ -73,6 +78,7 @@ namespace WebApp.Controllers
             catch (ArgumentException)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return;
             }
 
         }
