@@ -50,6 +50,10 @@ namespace Model.Files
         }
 
 
+        public static FileData[] GetUserFilesList(int candidateId)
+            => Instance.UsersFiles.SingleOrDefault(n => n.Key.Id == candidateId).Value.ToArray();
+
+
         /// <summary>
         /// Submit file to server storage
         /// </summary>
