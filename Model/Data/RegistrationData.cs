@@ -9,12 +9,8 @@ namespace Model.Data
 
         public new string Data => "json";
 
-
-        public string email;
-        public long number;
-        public string citezenship;
-        public string acknowledgment;
-
+        public UserProfile Profile { get; set; }
+        
         public RootEnum RootType;
 
 

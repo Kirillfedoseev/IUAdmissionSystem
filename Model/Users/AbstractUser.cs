@@ -7,7 +7,7 @@ namespace Model.Users
         public readonly int Id;
 
           
-        public UserProfile Profile { get; internal set; }
+        public UserProfile Profile { get; set; }
         
         
         private RootEnum RootType { get; set; }
@@ -20,6 +20,7 @@ namespace Model.Users
         {
             Id = id;
             RootType = rootType;
+            Profile = new UserProfile();
         }
       
         

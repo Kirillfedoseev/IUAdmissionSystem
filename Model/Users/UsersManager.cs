@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -33,11 +32,11 @@ namespace Model.Users
         }
 
 
-        public static AbstractUser CreateUser(RootEnum rootsType)
+        public static AbstractUser CreateUser(RegistrationData regData)
         {
             AbstractUser user;
 
-            switch (rootsType)
+            switch (regData.RootType)
             {
                 case RootEnum.Candidate:
                     user = new CandidateUser(++Instance.LastId);
@@ -56,8 +55,10 @@ namespace Model.Users
                     Instance._specificUserLists[typeof(AdminUser)].Add(user);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException(nameof(rootsType), rootsType, null);
+                    throw new ArgumentOutOfRangeException(nameof(regData.RootType), regData.RootType, null);
             }
+
+            user.Profile = regData.Profile;
 
             return user;
         }

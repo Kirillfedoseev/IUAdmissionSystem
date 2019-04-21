@@ -59,7 +59,8 @@ namespace Model.Authentication
             if(Instance._usersAuthData.Count(n => n.Key.Equals(regData)) != 0) 
                 throw  new AuthExceptions.UserAlreadyExists(regData);
 
-            AbstractUser user = UsersManager.CreateUser(regData.RootType);
+            AbstractUser user = UsersManager.CreateUser(regData);
+
 
             Instance._usersAuthData.Add(regData, user);
             try
