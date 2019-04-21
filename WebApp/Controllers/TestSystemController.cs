@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
 using Model.Data;
 using Model.Users;
+using Model.Tests;
 
 namespace WebApp.Controllers
 {
@@ -32,9 +33,7 @@ namespace WebApp.Controllers
                 return;
             }
 
-
-            throw new NotImplementedException();
-           
+            TestsManager.CreateTest(testData);
         }
 
         [HttpGet("test/getTests")]
@@ -53,13 +52,13 @@ namespace WebApp.Controllers
                 return null;
             }
 
-            throw new NotImplementedException();
+            throw new NotImplementedException(); //TODO: Add Logic
 
-            
+
         }
 
         [HttpPost("test/submit")]
-        public void SubmitAnswers(string data)//TODO: Change to  AnswersData
+        public void SubmitAnswers(TestResultsData testResults)//TODO: Change to  AnswersData
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -74,7 +73,7 @@ namespace WebApp.Controllers
                 return;
             }
 
-            throw new NotImplementedException();
+            TestsManager.SubmitTestResult(UsersManager.GetUser(token).Id, testResults);
         }
 
 
