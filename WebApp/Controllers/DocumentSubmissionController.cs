@@ -25,10 +25,17 @@ namespace WebApp.Controllers
                 return null;
             }
 
-            //todo exception and check on valid token
-            //Read Stream and convert to String     
-            AbstractUser user = AuthManager.Instance[token];
-            return FileManager.GetFileData(user, type);
+            try
+            {
+                //Read Stream and convert to String     
+                AbstractUser user = AuthManager.Instance[token];
+                return FileManager.GetFileData(user, type);
+            }
+            catch(FileException)
+            {
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return null;
+            }
         }
 
         [HttpPost("dashboard/photo")]
