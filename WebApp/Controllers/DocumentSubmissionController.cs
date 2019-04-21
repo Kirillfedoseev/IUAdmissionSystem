@@ -12,7 +12,7 @@ namespace WebApp.Controllers
     {
         [Route("dashboard/photo")]
         [HttpGet("{type}")]
-        public (FileData fileData, string bytes) GetFile(string type)
+        public FileInput  GetFile(string type)
         {
 
             var tokenString = Request.Headers["Authorization"];
@@ -21,7 +21,11 @@ namespace WebApp.Controllers
             //todo exception and check on valid token
             //Read Stream and convert to String     
             AbstractUser user = AuthManager.Instance[token];
-            return FileManager.GetFileData(user, type);
+            var result = new FileInput();
+            var output = FileManager.GetFileData(user, type);
+            result.Bytes = output.fileStream;
+            result.Data = output.fileData;
+            return result;
         }
 
         [HttpPost("dashboard/photo")]

@@ -11,11 +11,9 @@ namespace Model.Files
 {
     public class FileManager:Singletone<FileManager>
     {
-        private Dictionary<AbstractUser, List<FileData>> usersFiles;
-
         public const string RootStorageDirectory = "Storage" ;
 
-        public Dictionary<AbstractUser, List<FileData>> UsersFiles { get => usersFiles; set => usersFiles = value; }
+        public Dictionary<AbstractUser, List<FileData>> UsersFiles { get; set; }
 
         private static string GetFullFileName(int id, string name) => $"{RootStorageDirectory}/{id}/{name}.bytes";
 

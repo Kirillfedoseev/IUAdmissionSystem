@@ -15,12 +15,29 @@ namespace Model.Interviews
 
         private readonly List<CandidateUser> _interviewResults;
 
+        public static CandidateUser[] GetCandidateUserList()
+            => Instance._readyCandidates.ToArray();
+
+
+        public static CandidateUser[] GetCandidateUserList(TokenData tokenData)
+            => Instance._interviewPairs.Where(n => n.Value.id == AuthManager.Instance[tokenData].id).Select(n => n.Key).ToArray();
+
+        
+
 
         public InterviewManager()
         {
             _interviewPairs = new Dictionary<CandidateUser, InterviewerUser>();
             _readyCandidates = new List<CandidateUser>();
         }
+
+        public static void AddCandidateToInterviewQueue(int candidateID)
+        {
+            var candidate = UsersManager.GetUserByID<CandidateUser>(candidateID);
+            candidate.Status = CandidateUser.AdmissionStatus.WaitingInterview;
+            Instance._readyCandidates.Add(candidate);
+        }
+
 
         public static void CreateInterview( int candidateID, int interviewerID)
         {
@@ -31,6 +48,7 @@ namespace Model.Interviews
             Instance._readyCandidates.Remove(candidate);
         }
 
+
         public static void DeleteInterview(int candidateID, int interviewerID)
         {
             CandidateUser candidate = Instance._interviewPairs.SingleOrDefault(n => n.Key.id == candidateID).Key;
@@ -38,15 +56,7 @@ namespace Model.Interviews
             candidate.Status = CandidateUser.AdmissionStatus.WaitingInterview;
             Instance._readyCandidates.Add(candidate);
         }
-
-
-
-        public static void AddCandidateToInterviewQueue(int candidateID)
-        {
-            var candidate = UsersManager.GetUserByID<CandidateUser>(candidateID);
-            candidate.Status = CandidateUser.AdmissionStatus.WaitingInterview;
-            Instance._readyCandidates.Add(candidate);
-        }
+        
 
         public static void SetInterviewResults(int candidateID, InterviewStatus status)
         {
@@ -65,11 +75,6 @@ namespace Model.Interviews
         }
 
 
-        public static CandidateUser[] GetCandidateUserList() 
-            => Instance._readyCandidates.ToArray();
-
-        public static CandidateUser[] GetCandidateUserList(TokenData tokenData)
-            => Instance._interviewPairs.Where(n => n.Value.id == AuthManager.Instance[tokenData].id).Select(n => n.Key).ToArray();
 
 
         public enum InterviewStatus

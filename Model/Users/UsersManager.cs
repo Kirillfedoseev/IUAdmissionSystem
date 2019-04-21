@@ -6,7 +6,7 @@ using Model.Support;
 
 namespace Model.Users
 {
-    class UsersManager:Singletone<UsersManager>
+    public class UsersManager:Singletone<UsersManager>
     {
 
         private Dictionary<Type, List<AbstractUser>> _specificUserLists;
@@ -41,7 +41,6 @@ namespace Model.Users
 
         public static T GetUserByID<T>(int id) where T : AbstractUser 
             => Instance._specificUserLists[typeof(T)].SingleOrDefault(i => i.id == id) as T;
-
 
 
         public static void DeleteUserById(int id)
