@@ -1,8 +1,9 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 
 namespace Model.Data
 {
-    public class AuthData:IData
+    public class AuthData : IData
     {
         
         public virtual string Type => typeof(AuthData).ToString();
@@ -61,6 +62,11 @@ namespace Model.Data
         {
             var authData = obj as AuthData;
             return string.Equals(authData?.Login, Login);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Type, Data, Login, Password);
         }
     }
 }
