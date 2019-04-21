@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Model.Authentication;
+using Model.Data;
+using Model.Interviews;
 using Model.Support;
+using static Model.Users.CandidateUser;
 
 namespace Model.Users
 {
@@ -59,6 +63,48 @@ namespace Model.Users
         public static AbstractUser GetUserById(int id) 
             => Instance._specificUserLists.Values.SelectMany(n => n).Single(i => i.Id == id);
 
+        /// <summary>
+        /// Get user's profile by token
+        /// </summary>
+        /// <param name="authToken">Auth token, , which was got witihin authentication or registration</param>
+        /// <exception cref=""></exception>
+        /// <returns>User profile data</returns>
+        public static UserProfile GetUserProfile(TokenData authToken)
+            => GetUser(authToken).Profile;
+
+
+        public static void SetUserProfile(TokenData authToken, UserProfile profile)
+            => GetUser(authToken).Profile = profile;
+
+        public static void SetUserStatus(StatusUpdateData data)
+        {
+            CandidateUser user = GetUserById<CandidateUser>(data.CandidateId);
+
+            if (user == null)
+                throw new InterviewException.CandidateDoesntExistsException(data.CandidateId);
+
+            switch (data.Status)
+            {
+                case AdmissionStatus.Registered:
+                    user.Status = AdmissionStatus.Registered;
+                    break;
+                case AdmissionStatus.PassedTests:
+                    user.Status = AdmissionStatus.PassedTests;
+                    InterviewManager.AddCandidateToInterviewQueue(data.CandidateId);
+                    break;
+                case AdmissionStatus.Passed:
+                    user.Status = AdmissionStatus.Registered;
+                    break;
+                case AdmissionStatus.Rejected:
+                    user.Status = AdmissionStatus.Registered;
+                    break;
+            }
+
+        }
+
+
+        private static AbstractUser GetUser(TokenData authToken)
+            => AuthManager.Instance[authToken];
 
         public static T GetUserById<T>(int id) where T : AbstractUser 
             => Instance._specificUserLists[typeof(T)].SingleOrDefault(i => i.Id == id) as T;
