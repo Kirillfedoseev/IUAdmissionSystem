@@ -66,24 +66,6 @@ namespace Model.Data
         }
     }
 
-    class TestData : IData
-    {
-        public string Type { get; }
-        public string Data { get; }
-
-
-
-        public string SerializeToJSON()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public IData DeserializeFromJSON(string json)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
-
     public class ProgramData : IData
     {
         
