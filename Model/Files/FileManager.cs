@@ -3,71 +3,145 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Model.Authentication;
 using Model.Data;
 using Model.Support;
 using Model.Users;
 
 namespace Model.Files
 {
+    /// <summary>
+    /// Class with manage all actions, which relate to files in system
+    /// </summary>
     public class FileManager:Singletone<FileManager>
     {
+
+        /// <summary>
+        /// Related path to the file storage
+        /// </summary>
         public const string RootStorageDirectory = "Storage" ;
 
+        /// <summary>
+        /// Collection with all files of user, mapped as User to list of FileData
+        /// Each user can have only one unique file for each Type
+        /// </summary>
         public Dictionary<AbstractUser, List<FileData>> UsersFiles { get; set; }
 
-        private static string GetFullFileName(int id, string name) => $"{RootStorageDirectory}/{id}/{name}.bytes";
+        /// <summary>
+        /// Help method for getting filename
+        /// </summary>
+        /// <param name="id">id of user, which submit file</param>
+        /// <param name="type">type of the file</param>
+        /// <returns>filename with path to it</returns>
+        private static string GetFullFileName(int id, string type) => $"{RootStorageDirectory}/{id}/{type}.bytes";
 
+        /// <summary>
+        /// Special object for preventing racecondion for writing and reading the same files  
+        /// </summary>
+        private readonly object _lock;
+
+        /// <summary>
+        /// Constructor, which create Static Instance of the FileManager
+        /// </summary>
         public FileManager()
         {
             UsersFiles = new Dictionary<AbstractUser, List<FileData>>();
+            _lock = new object();
         }
 
+
+        /// <summary>
+        /// Submit file to server storage
+        /// </summary>
+        /// <param name="user">the user, which submit file to the storage</param>
+        /// <param name="info">Information about file</param>
+        /// <param name="fileStream">string, which contain representation of file in bytes</param>
+        /// <exception cref="ArgumentNullException">throw exception if arguments is null</exception>
         public static void SubmitFile(AbstractUser user, FileData info, string fileStream)
         {
-            byte[] byteArray = Encoding.ASCII.GetBytes(fileStream);
-            Stream stream = new MemoryStream(byteArray);
+            if (user == null)
+                throw new ArgumentNullException(nameof(user), "user was null");
+            if (info == null)
+                throw new ArgumentNullException(nameof(info), "FileData was null");
+            if (fileStream == null)
+                throw new ArgumentNullException(nameof(fileStream), "FileStream was null");
 
-            SaveFile(GetFullFileName(user.id, info.Type), stream);
+            try
+            {             
+                byte[] byteArray = Encoding.ASCII.GetBytes(fileStream);
+                Stream stream = new MemoryStream(byteArray);
 
-            //todo handle errors
+                SaveFile(GetFullFileName(user.id, info.Type), stream);
+            }
+            catch (Exception e)
+            {
+                throw new FileException();
+            }
+
             if (!Instance.UsersFiles.ContainsKey(user))
-                Instance.UsersFiles.Add(user, new List<FileData>());
+                    Instance.UsersFiles.Add(user, new List<FileData>());
 
-            Instance.UsersFiles[user].Add(info);
+                Instance.UsersFiles[user].Add(info);         
         }
 
 
-        public static (FileData fileData, string fileStream) GetFileData(AbstractUser user, string type)
+        /// <summary>
+        /// Get file from server file storage
+        /// </summary>
+        /// <param name="user">the user, which request file from the storage</param>
+        /// <param name="type">Type of the file, which was requested</param>
+        /// <exception cref="FileException.UserDoesntHaveFilesException"> If user doesn't have any file</exception>
+        /// <exception cref="FileException.UserDoesntHaveFileOfGivenTypeException">If file of given type doesn't exist in storage</exception>
+        /// <returns>Wrapper, which contain FileData and it's representation in string</returns>
+        public static FileDataWrapper GetFileData(AbstractUser user, string type)
         {
             string filename = GetFullFileName(user.id, type);
 
             if (!Instance.UsersFiles.TryGetValue(user, out var list))
-                throw new Exception("Incorrect User!");
+                throw new FileException.UserDoesntHaveFilesException();
 
-            FileData fileData;
-            return (fileData = list.SingleOrDefault(n => n.Type.Equals(type))) != null
-                ? (fileData, LoadFileAsString(filename))
-                : throw new Exception("File type doesn't exists!");
+            var fileData = list.SingleOrDefault(n => n.Type.Equals(type));
 
+            return fileData != null
+                ? new FileDataWrapper(fileData, LoadFileAsString(filename))
+                : throw new FileException.UserDoesntHaveFileOfGivenTypeException(type);
         }
 
 
+        /// <summary>
+        /// Internal function for saving file
+        /// </summary>
+        /// <param name="filename">filename and also the path</param>
+        /// <param name="fileStream">stream, from which bytes are reading to be written</param>
         private static void SaveFile(string filename, Stream fileStream)
         {
-            Directory.CreateDirectory(filename.Remove(filename.LastIndexOf('/')));
-            using (var file = File.Create(filename))
+            lock (Instance._lock)
             {
-                fileStream.Seek(0, SeekOrigin.Begin);
-                fileStream.CopyTo(file);
-            }        
+                Directory.CreateDirectory(filename.Remove(filename.LastIndexOf('/')));
+                using (var file = File.Create(filename))
+                {
+                    fileStream.Seek(0, SeekOrigin.Begin);
+                    fileStream.CopyTo(file);
+                }
+            }                 
         }
 
 
+        /// <summary>
+        /// Internal function for loading file as string
+        /// </summary>
+        /// <param name="filename">filename and also the path</param>
+        /// <returns>string of byte, which represents file</returns>
         private static string LoadFileAsString(string filename)
         {
-            StreamReader reader = new StreamReader(File.OpenRead(filename));
-            string fileString = reader.ReadToEnd();
-            return fileString;
+            lock (Instance._lock)
+            {
+                using (var reader = new StreamReader(File.OpenRead(filename)))
+                {
+                    string fileString = reader.ReadToEnd();
+                    return fileString;
+                }
+            }
         }
 
     }

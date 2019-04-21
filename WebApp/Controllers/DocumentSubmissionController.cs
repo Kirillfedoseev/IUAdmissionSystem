@@ -12,7 +12,7 @@ namespace WebApp.Controllers
     {
         [Route("dashboard/photo")]
         [HttpGet("{type}")]
-        public FileInput  GetFile(string type)
+        public FileDataWrapper GetFile(string type)
         {
 
             var tokenString = Request.Headers["Authorization"];
@@ -21,15 +21,11 @@ namespace WebApp.Controllers
             //todo exception and check on valid token
             //Read Stream and convert to String     
             AbstractUser user = AuthManager.Instance[token];
-            var result = new FileInput();
-            var output = FileManager.GetFileData(user, type);
-            result.Bytes = output.fileStream;
-            result.Data = output.fileData;
-            return result;
+            return FileManager.GetFileData(user, type);
         }
 
         [HttpPost("dashboard/photo")]
-        public void UploadPhoto([FromBody] FileInput input)
+        public void UploadPhoto([FromBody] FileDataWrapper input)
         {
             
             var tokenString = Request.Headers["Authorization"];
@@ -41,11 +37,7 @@ namespace WebApp.Controllers
             FileManager.SubmitFile(user, input.Data, input.Bytes);
         }
         
-        public struct FileInput
-        {
-            public FileData Data { get; set; }
-            public string Bytes { get; set; }
-        }
+        
 
     }
 }
