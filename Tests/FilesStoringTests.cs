@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Model.Authentication;
 using Model.Data;
+using Model.Files;
 using Model.Users;
 
 namespace Tests
@@ -12,104 +12,88 @@ namespace Tests
         [TestMethod]
         public void SubmitFileCompleted()
         {
+            #region test_teext
+            string file =
+                "jhgadflnbijsdfgnbmoisdfgbnmojsdfgbnmosfgnmodgfosfnmosfgmnosfmnoiksfgmbnoisgnhoigsdfxnmoisdrftmnoisfrmnoisfgnm[isofgnmoiksfrnmosifgtnmoiskfgnmsfr";
+            #endregion
+            AbstractUser user = new TestUser(new RootEnum[0]);
+            FileData data = new FileData{Type = "CV", FileName = "test.txt"};
+            FileManager.SubmitFile(user, data, file);
+            var wrapper= FileManager.GetFileData(user, "CV");
 
-            AuthData authData = new AuthData("test", "test");
-            TokenData tokenData = AuthManager.RegisterUser(authData, new RootEnum[0]);
-
-            File.WriteAllBytes("tests.bytes", new byte[]{ 234, 4, 3, 2, 4, 5, 2, 3, 5, 6, 23, 5, 5, 32, 3, 5, 4, 3, 6, 7, 5, 7, 65, 7, 3, 7, 37, 5, 67, 7, 58, 9 });
-            bool equal = true;
-
-            using (Stream a = File.OpenRead("tests.bytes"))
-            {
-                DataModelFacade.SubmitFile(tokenData, FileTypes.CV, a);
-                var b = DataModelFacade.GetFile(tokenData, FileTypes.CV);
-
-                Assert.IsTrue(a.Length == b.Length);
-                a.Seek(0, SeekOrigin.Begin);
-                b.Seek(0, SeekOrigin.Begin);
-                for (int i = 0; i < a.Length; i++)
-                {
-                    if (a.ReadByte() != b.ReadByte())
-                    {
-                        equal = false;
-                        break;
-                    } 
-                }
-
-            }
+            Assert.IsTrue(data.Equals(wrapper.Data) && file.Equals(wrapper.Bytes));         
+          
             File.Delete("tests.bytes");
-            Assert.IsTrue(equal);
-
         }
 
 
-        [TestMethod]
-        public void GetFileWithoutRoots()
-        {          
-            TokenData tokenData = new TokenData("123");
+        //[TestMethod]
+        //public void GetFileWithoutRoots()
+        //{          
+        //    TokenData tokenData = new TokenData("123");
 
-            try
-            {
-                var b = DataModelFacade.GetFile(tokenData, FileTypes.CV);
-                Assert.Fail("Was get without token!");
-            }
-            catch (TokenExceptions.TokenDoesNotExists e)
-            {
-            }           
-        }
-
-
-        [TestMethod]
-        public void SubmitFileWithoutRoots()
-        {
-            TokenData tokenData = new TokenData("123");
-
-            try
-            {
-                DataModelFacade.SubmitFile(tokenData, FileTypes.CV, new MemoryStream());
-                Assert.Fail("Was submited without token!");
-            }
-            catch (TokenExceptions.TokenDoesNotExists e)
-            {
-            }
-        }
+        //    try
+        //    {
+        //        var b = DataModelFacade.GetFile(tokenData, FileTypes.CV);
+        //        Assert.Fail("Was get without token!");
+        //    }
+        //    catch (TokenExceptions.TokenDoesNotExists e)
+        //    {
+        //    }           
+        //}
 
 
-        [TestMethod]
-        public void ResendFileCompleted()
-        {
+        //[TestMethod]
+        //public void SubmitFileWithoutRoots()
+        //{
+        //    TokenData tokenData = new TokenData("123");
 
-            AuthData authData = new AuthData("test", "test");
-            TokenData tokenData = AuthManager.RegisterUser(authData, new RootEnum[0]);
+        //    try
+        //    {
+        //        DataModelFacade.SubmitFile(tokenData, FileTypes.CV, new MemoryStream());
+        //        Assert.Fail("Was submited without token!");
+        //    }
+        //    catch (TokenExceptions.TokenDoesNotExists e)
+        //    {
+        //    }
+        //}
 
-            File.WriteAllBytes("tests.bytes", new byte[] { 234, 4, 3, 2, 4, 5, 2, 3, 5, 6, 23, 5, 5, 32, 3, 5, 4, 3, 6, 7, 5, 7, 65, 7, 3, 7, 37, 5, 67, 7, 58, 9 });
-            bool equal = true;
 
-            using (Stream a = File.OpenRead("tests.bytes"))
-            {
-                DataModelFacade.SubmitFile(tokenData, FileTypes.CV, a);
+        //[TestMethod]
+        //public void ResendFileCompleted()
+        //{
 
-                DataModelFacade.SubmitFile(tokenData, FileTypes.CV, a);
+        //    AuthData authData = new AuthData("test", "test");
+        //    TokenData tokenData = AuthManager.RegisterUser(authData, new RootEnum[0]);
 
-                var b = DataModelFacade.GetFile(tokenData, FileTypes.CV);
+        //    File.WriteAllBytes("tests.bytes", new byte[] { 234, 4, 3, 2, 4, 5, 2, 3, 5, 6, 23, 5, 5, 32, 3, 5, 4, 3, 6, 7, 5, 7, 65, 7, 3, 7, 37, 5, 67, 7, 58, 9 });
+        //    bool equal = true;
 
-                Assert.IsTrue(a.Length == b.Length);
-                a.Seek(0, SeekOrigin.Begin);
-                b.Seek(0, SeekOrigin.Begin);
-                for (int i = 0; i < a.Length; i++)
-                {
-                    if (a.ReadByte() != b.ReadByte())
-                    {
-                        equal = false;
-                        break;
-                    }
-                }
+        //    using (Stream a = File.OpenRead("tests.bytes"))
+        //    {
+        //        DataModelFacade.SubmitFile(tokenData, FileTypes.CV, a);
 
-            }
-            File.Delete("tests.bytes");
-            Assert.IsTrue(equal);
+        //        DataModelFacade.SubmitFile(tokenData, FileTypes.CV, a);
 
-        }
+        //        var b = DataModelFacade.GetFile(tokenData, FileTypes.CV);
+
+        //        Assert.IsTrue(a.Length == b.Length);
+        //        a.Seek(0, SeekOrigin.Begin);
+        //        b.Seek(0, SeekOrigin.Begin);
+        //        for (int i = 0; i < a.Length; i++)
+        //        {
+        //            if (a.ReadByte() != b.ReadByte())
+        //            {
+        //                equal = false;
+        //                break;
+        //            }
+        //        }
+
+        //    }
+        //    File.Delete("tests.bytes");
+        //    Assert.IsTrue(equal);
+
+        //}
 
     }
 }
