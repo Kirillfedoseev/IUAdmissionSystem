@@ -18,12 +18,11 @@ namespace Tests
             AbstractUser user = new TestUser(new RootEnum[0]);
             FileData data = new FileData{Type = "CV", FileName = "test.txt"};
             FileManager.SubmitFile(user, data, file);
-            (FileData recieved, string filestream) = FileManager.GetFileData(user, "CV");
+            var wrapper= FileManager.GetFileData(user, "CV");
 
-            Assert.IsTrue(data.Equals(recieved) && file.Equals(filestream));         
+            Assert.IsTrue(data.Equals(wrapper.Data) && file.Equals(wrapper.Bytes));         
           
             File.Delete("tests.bytes");
-
         }
 
 
