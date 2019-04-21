@@ -22,7 +22,7 @@ namespace Model.Interviews
             _readyCandidates = new List<CandidateUser>();
         }
 
-        public static void CreateInterview( int candidateID, int interviewerID)
+        public static void CreateInterview( int candidateID, int interviewerID, string time) //TODO: Add time saving
         {
             CandidateUser candidate = Instance._readyCandidates.SingleOrDefault(n => n.id == candidateID);
 
