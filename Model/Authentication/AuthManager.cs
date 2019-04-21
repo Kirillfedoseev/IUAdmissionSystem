@@ -66,7 +66,7 @@ namespace Model.Authentication
             {
                 return AuthUser(regData);
             }
-            catch (AuthExceptions e)
+            catch (AuthExceptions)
             {
                 throw new AuthExceptions.RegistrationException(regData);
             }
@@ -100,11 +100,11 @@ namespace Model.Authentication
             {
                 return Instance._register.ValidateAuthToken(authToken) != null;
             }
-            catch (TokenExceptions.TokenDoesNotExists e)
+            catch (TokenExceptions.TokenDoesNotExists)
             {
                 return false;
             }
-            catch (TokenExceptions.TokenExpired e)
+            catch (TokenExceptions.TokenExpired)
             {
                 return false;
             }

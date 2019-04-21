@@ -36,5 +36,10 @@ namespace Model.Data
         {
             throw new NotImplementedException();
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Type, Data, Token, IsValid);
+        }
     }
 }

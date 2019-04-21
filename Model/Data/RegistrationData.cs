@@ -4,7 +4,7 @@ namespace Model.Data
 {
     public class RegistrationData : AuthData
     {
-        public string Type { get; } = typeof(RegistrationData).ToString();
+        public override string Type { get; } = typeof(RegistrationData).ToString();
 
         public new string Data => "json";
 
@@ -17,7 +17,7 @@ namespace Model.Data
         public RootEnum RootType;
 
 
-        public string SerializeToJSON()
+        public override string SerializeToJSON()
         {
             //            {
             //                type:"type",

@@ -5,7 +5,7 @@ namespace Model.Data
     public class AuthData:IData
     {
         
-        public string Type => typeof(AuthData).ToString();
+        public virtual string Type => typeof(AuthData).ToString();
         
         public string Data
         {
@@ -33,7 +33,7 @@ namespace Model.Data
         }
         
         
-        public string SerializeToJSON()
+        public virtual string SerializeToJSON()
         {
             var jObject = new JObject
             {
@@ -44,7 +44,7 @@ namespace Model.Data
         }
 
 
-        public IData DeserializeFromJSON(string json)
+        public virtual IData DeserializeFromJSON(string json)
         {
             JObject jObject = new JObject(json);
             JToken type = jObject["type"];

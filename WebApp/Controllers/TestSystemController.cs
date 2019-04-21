@@ -17,7 +17,7 @@ namespace WebApp.Controllers
     {
 
         [HttpPost("test/create")]
-        public void CreateTest(TestData data)
+        public void CreateTest(TestData testData)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -66,12 +66,12 @@ namespace WebApp.Controllers
             if (!AuthManager.ValidateAuthToken(token))
             {
                 Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
-                return null;
+                return;
             }
             if (!UsersManager.GetUser(token).HasRoot(RootEnum.Candidate)) //TODO: Check!
             {
                 Response.StatusCode = (int)HttpStatusCode.Forbidden;
-                return null;
+                return;
             }
 
             throw new NotImplementedException();

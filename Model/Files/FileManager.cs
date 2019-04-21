@@ -72,7 +72,7 @@ namespace Model.Files
                 SaveFile(GetFullFileName(user.Id, info.Type), byteArray);
 
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new FileException();
             }

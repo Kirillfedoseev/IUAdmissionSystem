@@ -31,5 +31,10 @@ namespace Model.Data
             if (a == null) return false;
             return a.CandidateID == CandidateID && a.InterviewerID == InterviewerID && a.Time.Equals(Time);
         }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(CandidateID, InterviewerID, Time, Type, Data);
+        }
     }
 }

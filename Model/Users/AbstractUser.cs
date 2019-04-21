@@ -1,4 +1,6 @@
-﻿namespace Model.Users
+﻿using System;
+
+namespace Model.Users
 {
     public abstract class AbstractUser
     {
@@ -31,7 +33,11 @@
         {
             return root == RootType;
         }
-        
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Id, Profile, RootType, PhotoUrl);
+        }
     }
 
     class AdminUser : AbstractUser

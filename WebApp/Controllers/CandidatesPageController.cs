@@ -35,7 +35,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost("manager/candidateGrade")]
-        public void SubmitSolutionForCandidate(StatusUpdateData data)
+        public void SubmitSolutionForCandidate(StatusUpdateData statusUpdateData)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -51,7 +51,7 @@ namespace WebApp.Controllers
                 return;
             }
 
-            UsersManager.SetUserStatus(data);
+            UsersManager.SetUserStatus(statusUpdateData);
         }
     }
 }
