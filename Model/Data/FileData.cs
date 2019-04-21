@@ -21,8 +21,16 @@
 
     public class FileDataWrapper
     {
+        
+
         public FileData Data { get; set; }
 
         public string Bytes { get; set; }
+
+        public FileDataWrapper(FileData data, string bytes)
+        {
+            Data = data;
+            Bytes = bytes;
+        }
     }
 }
