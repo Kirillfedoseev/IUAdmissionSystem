@@ -31,6 +31,7 @@ public class TestData : IData
 
         public class Answer : IData
         {
+
             public int AnswerID;
             public string AnswerText { get; set; }
             #region IData
