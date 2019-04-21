@@ -15,7 +15,7 @@ namespace Tests
 
             AuthData authData = new AuthData("test","test");
 
-            TokenData tokenData = AuthManager.RegisterUser(authData, new RootEnum[0]);
+            TokenData tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
 
             var user = AuthManager.DoesUserExists(authData);
 
@@ -32,13 +32,13 @@ namespace Tests
 
             AuthData authData = new AuthData("test1", "test1");
 
-            TokenData tokenData = AuthManager.RegisterUser(authData, new RootEnum[0]);
+            TokenData tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
 
             try
             {
                 authData = new AuthData("test1", "test1");
 
-                tokenData = AuthManager.RegisterUser(authData, new RootEnum[0]);
+                tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
                 Assert.Fail("The same user was added!");
             }
             catch (AuthExceptions.UserAlreadyExists e)
@@ -54,7 +54,7 @@ namespace Tests
 
             AuthData authData = new AuthData("test2", "test2");
 
-            TokenData tokenData = AuthManager.RegisterUser(authData, new RootEnum[0]);
+            TokenData tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
 
             AuthManager.LogOutUser(tokenData);
 
@@ -73,7 +73,7 @@ namespace Tests
 
             AuthData authData = new AuthData("test3", "test3");
 
-            TokenData tokenData = AuthManager.RegisterUser(authData, new RootEnum[0]);
+            TokenData tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
 
             AuthManager.LogOutUser(tokenData);
 
@@ -92,7 +92,7 @@ namespace Tests
 
             AuthData authData = new AuthData("test4", "test4");
 
-            TokenData tokenData = AuthManager.RegisterUser(authData, new RootEnum[0]);
+            TokenData tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
 
             Assert.IsTrue(AuthManager.ValidateAuthToken(tokenData));
 

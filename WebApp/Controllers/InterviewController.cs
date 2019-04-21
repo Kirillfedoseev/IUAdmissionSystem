@@ -6,6 +6,7 @@ using Model.Interviews;
 using Model.Users;
 using System;
 using System.Net;
+using Model.Authentication;
 
 namespace WebApp.Controllers
 {
@@ -18,12 +19,14 @@ namespace WebApp.Controllers
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-            if (!AuthManager.ValidateAuthToken(token))
+
+              if (!AuthManager.ValidateAuthToken(token))
             {
                 Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
                 return null;
             }
-            return InterviewManager.GetCandidateUserList();
+            var interviewer = AuthManager.Instance[token];
+            return InterviewManager.GetCandidateUserList(interviewer.Id);
         }
 
         [HttpPost("interviewer/updateGrade")]

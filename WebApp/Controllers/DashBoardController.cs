@@ -1,12 +1,11 @@
-﻿using System;
+
+using System;
 using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Text;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Model;
-using Model.Authentication;
 using Model.Data;
 using Model.Users;
 
@@ -17,13 +16,12 @@ namespace WebApp.Controllers
     public class DashBoardController : Controller
     {
 
-
-        // POST dashboard/saveProfile
         [HttpPost("dashboard/profile")]
         public void SaveProfile([FromBody] UserProfile data)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
+
 
             if (!AuthManager.ValidateAuthToken(token))
             {
@@ -31,16 +29,20 @@ namespace WebApp.Controllers
                 return;
             }
 
-            DataModelFacade.SetUserProfile(token, data);
+
+            //todo root validation
+
+
+            UsersManager.SetUserProfile(token, data);
         }
 
 
-    
         [HttpGet("dashboard/profile")]
         public UserProfile GetProfile()
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
+
 
             if (!AuthManager.ValidateAuthToken(token))
             {
@@ -48,15 +50,16 @@ namespace WebApp.Controllers
                 return new UserProfile();
             }
 
-            return DataModelFacade.GetUserProfile(token);
-           
+            //todo root validation
+            return UsersManager.GetUserProfile(token);
+
         }
 
-        [HttpPost("manager/candidateStatus")]
-        public void SetCandidateStatus([FromBody] CandidateStatusData data) 
-        {
-            
 
+        [HttpPost("manager/candidateStatus")]
+
+        public CandidateUser SetCandidateStatus([FromBody] StatusUpdateData status) //TODO: Change to CanditateStatus Data
+        {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
             if (!AuthManager.ValidateAuthToken(token))
@@ -64,11 +67,14 @@ namespace WebApp.Controllers
                 Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
                 return;
             }
-            
 
-            throw new NotImplementedException();
+            //todo root validation
+
+            UsersManager.SetUserStatus(status);
+
+            return UsersManager.GetUser<CandidateUser>(status.CandidateId);
+
         }
-
 
     }
 }

@@ -47,9 +47,17 @@ namespace WebApp.Controllers
 
             //Send file stream to DB
             //todo exceptions and token check
-            AbstractUser user = AuthManager.Instance[token];
-            FileManager.SubmitFile(user, input.Data, input.Bytes);
-            Response.StatusCode = (int)HttpStatusCode.OK;
+
+            try
+            {
+                AbstractUser user = AuthManager.Instance[token];
+                FileManager.SubmitFile(user, input.Data, input.Bytes);
+                Response.StatusCode = (int)HttpStatusCode.OK;
+            }
+            catch ()
+            {
+
+            }
         }
         
         

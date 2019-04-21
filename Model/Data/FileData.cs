@@ -21,8 +21,7 @@
 
     public class FileDataWrapper
     {
-        
-
+       
         public FileData Data { get; set; }
 
         public string Bytes { get; set; }
