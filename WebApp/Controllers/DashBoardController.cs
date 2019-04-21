@@ -42,16 +42,13 @@ namespace WebApp.Controllers
 
         [HttpPost("manager/candidateStatus")]
         public UserProfile SetCandidateStatus([FromBody] string data) //TODO: Change to CanditateStatus Data
-        {
+        {   
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
             throw new NotImplementedException();
 
         }
-
-
-
 
 
     }

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using Model.Data;
 using Model.Interviews;
 using Model.Users;
+using System;
+using System.Net;
 
 namespace WebApp.Controllers
 {
@@ -15,18 +17,33 @@ namespace WebApp.Controllers
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
-            //todo interviewer id
+            
+            //TODO: CHECK
+            throw new NotImplementedException();
             return InterviewManager.GetCandidateUserList(token);
         }
 
         [HttpPost("interviewer/updateGrade")]
-        public void UpdateGrade([FromBody] string someData) //TODO: Change to GradeInfo Data
+        public void UpdateGrade([FromBody] GradeInfoData data) 
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            //todo give status of interview
-            InterviewManager.SetInterviewResults(1, InterviewManager.InterviewStatus.Fail);
+            InterviewManager.InterviewStatus status;
+            switch (data.Grade)
+            {
+                case "Passed":
+                    status = InterviewManager.InterviewStatus.Passed;
+                    break;
+                case "Fail":
+                    status = InterviewManager.InterviewStatus.Fail;
+                    break;
+                default:
+                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                    throw new Exception("Wrong Grade Type. Should be Passed of Fail");
+            }
+            
+            InterviewManager.SetInterviewResults(data.CandidateID, status);
         }
 
         [HttpGet("manager/interview/candidates")]
@@ -34,41 +51,51 @@ namespace WebApp.Controllers
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
+
             //todo checks and token validation
+            Console.WriteLine("///////////////////IMPORTANT//////////////////// \n Check Token here!");
+
             return InterviewManager.GetCandidateUserList();
 
         }
 
         [HttpPost("manager/addInterview")]
-        public void AddInterview([FromBody] string someData) //TODO: Change to InterviewInfo Data
+        public void AddInterview([FromBody] InterviewInfoData data) 
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            //todo set ids of interviewer and candidate
-            //todo checks
-            InterviewManager.CreateInterview(1,1);
+            //todo checks and token validation
+            Console.WriteLine("///////////////////IMPORTANT//////////////////// \n Check Token here!");
+
+
+            InterviewManager.CreateInterview(data.CandidateID,data.InterviewerID, data.Time);
+
         }
 
         [HttpPost("manager/editInterview")]
-        public void EditInterview([FromBody] string someData) //TODO: Change to InterviewIdentification Data
+        public void EditInterview([FromBody] InterviewInfoData data) 
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            //todo checks
-            InterviewManager.DeleteInterview(1,1);
-            InterviewManager.CreateInterview(2, 1);
+            //todo checks and token validation
+            Console.WriteLine("///////////////////IMPORTANT//////////////////// \n Check Token here!");
+
+            InterviewManager.DeleteInterview(data.CandidateID, data.InterviewerID);
+            InterviewManager.CreateInterview(data.CandidateID, data.InterviewerID, data.Time);
         }
 
         [HttpPost("manager/deleteInterview")]
-        public void DeleteInterview([FromBody] string someData) //TODO: Change to InterviewIdentification Data
+        public void DeleteInterview([FromBody] InterviewInfoData data) 
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            //todo checks
-            InterviewManager.DeleteInterview(1, 1);
+            //todo checks and token validation
+            Console.WriteLine("///////////////////IMPORTANT//////////////////// \n Check Token here!");
+
+            InterviewManager.DeleteInterview(data.CandidateID, data.InterviewerID);
         }
 
 

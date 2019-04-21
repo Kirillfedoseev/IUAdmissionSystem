@@ -1,23 +1,21 @@
 ﻿namespace Model.Data
 {
-    public  class FileData
+  public  class FileData: IData
     {
         public string Type { get; set; }
 
-        public string FileName { get; set; } 
+        public string FileName { get; set; }
 
-    }
+        public string Data => throw new System.NotImplementedException();
 
-    public struct FileDataWrapper
-    {
-        public FileData Data { get; set; }
-        public string Bytes { get; set; }
-
-        public FileDataWrapper(FileData data, string bytes) : this()
+        public IData DeserializeFromJSON(string json)
         {
-            Data = data;
-            Bytes = bytes;
+            throw new System.NotImplementedException();
         }
 
+        public string SerializeToJSON()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
