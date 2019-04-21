@@ -8,62 +8,82 @@ namespace Model.Users
 {
     public class UsersManager:Singletone<UsersManager>
     {
+        private int LastId { get; set; }
 
-        private Dictionary<Type, List<AbstractUser>> _specificUserLists;
+        private readonly Dictionary<Type, List<AbstractUser>> _specificUserLists;
 
 
         public UsersManager()
         {
-
             _specificUserLists = new Dictionary<Type, List<AbstractUser>>();
-
+            LastId = 0;
             var subclassTypes = Assembly.GetAssembly(typeof(AbstractUser)).GetTypes().Where(t => t.IsSubclassOf(typeof(AbstractUser)) && !t.IsAbstract);
             foreach (var subclassType in subclassTypes)
             {
-
                 Type genericListType = typeof(List<>).MakeGenericType(subclassType);
                 Activator.CreateInstance(genericListType);
-                //todo _specificUserLists.Add(subclassType, (List<AbstractUser>) Activator.CreateInstance(genericListType));
+                _specificUserLists.Add(subclassType, (List<AbstractUser>) Activator.CreateInstance(genericListType));
             }
         }
 
-        public static AbstractUser CreateUser(RootEnum[] roots)
+        public static AbstractUser CreateUser(RootEnum rootsType)
         {
-            //todo logic of understanding roots
-            CandidateUser user = new CandidateUser();
-            //todo Instance._specificUserLists[user.GetType()].Add(user);
+            AbstractUser user;
+
+            switch (rootsType)
+            {
+                case RootEnum.Candidate:
+                    user = new CandidateUser(++Instance.LastId);
+                    Instance._specificUserLists[typeof(CandidateUser)].Add(user);
+                    break;
+                case RootEnum.Manager:
+                    user = new ManagerUser(++Instance.LastId);
+                    Instance._specificUserLists[typeof(ManagerUser)].Add(user);
+                    break;
+                case RootEnum.Interviewer:
+                    user = new InterviewerUser(++Instance.LastId);
+                    Instance._specificUserLists[typeof(InterviewerUser)].Add(user);
+                    break;
+                case RootEnum.Admin:
+                    user = new AdminUser(++Instance.LastId);
+                    Instance._specificUserLists[typeof(AdminUser)].Add(user);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(rootsType), rootsType, null);
+            }
+
             return user;
         }
 
 
-        public static AbstractUser GetUserByID(int id) 
-            => Instance._specificUserLists.Values.SelectMany(n => n).Single(i => i.id == id);
+        public static AbstractUser GetUserById(int id) 
+            => Instance._specificUserLists.Values.SelectMany(n => n).Single(i => i.Id == id);
 
 
-        public static T GetUserByID<T>(int id) where T : AbstractUser 
-            => Instance._specificUserLists[typeof(T)].SingleOrDefault(i => i.id == id) as T;
+        public static T GetUserById<T>(int id) where T : AbstractUser 
+            => Instance._specificUserLists[typeof(T)].SingleOrDefault(i => i.Id == id) as T;
 
-        public static AbstractUser[] GetUsersByIDs(int[] ids)
-            => Instance._specificUserLists.Values.SelectMany(n => n).Where(i => ids.Contains(i.id)).ToArray();
+        public static AbstractUser[] GetUsersByIds(int[] ids)
+            => Instance._specificUserLists.Values.SelectMany(n => n).Where(i => ids.Contains(i.Id)).ToArray();
 
 
         public static T[] GetUsersByIDs<T>(int[] ids) where T : AbstractUser
-            => Instance._specificUserLists[typeof(T)].Where(i => ids.Contains(i.id)) as T[];
+            => Instance._specificUserLists[typeof(T)].Where(i => ids.Contains(i.Id)) as T[];
 
 
-        public static bool IsUserExistsByID(int id)
-            => Instance._specificUserLists.Values.SelectMany(n => n).Any(i => i.id == id);
+        public static bool IsUserExistsById(int id)
+            => Instance._specificUserLists.Values.SelectMany(n => n).Any(i => i.Id == id);
 
 
-        public static bool IsUserExistsByID<T>(int id) where T : AbstractUser
-            => Instance._specificUserLists[typeof(T)].Any(i => i.id == id);
+        public static bool IsUserExistsById<T>(int id) where T : AbstractUser
+            => Instance._specificUserLists[typeof(T)].Any(i => i.Id == id);
 
 
         public static void DeleteUserById(int id)
         {
             foreach (var list in Instance._specificUserLists.Values)
             {
-                if(list.RemoveAll(n=> n.id == id) > 0)
+                if(list.RemoveAll(n=> n.Id == id) > 0)
                     break;
             }
         }

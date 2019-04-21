@@ -20,7 +20,7 @@ namespace WebApp.Controllers
             var token = new TokenData(tokenString);
             //todo token check
             var interviewer = AuthManager.Instance[token];
-            return InterviewManager.GetCandidateUserList(interviewer.id);
+            return InterviewManager.GetCandidateUserList(interviewer.Id);
         }
 
         [HttpPost("interviewer/updateGrade")]

@@ -47,7 +47,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return AuthManager.RegisterUser(data, new RootEnum[] { RootEnum.None });
+                return AuthManager.RegisterUser(data, RootEnum.Candidate);
             }
             catch (AuthExceptions.RegistrationException)
             {
