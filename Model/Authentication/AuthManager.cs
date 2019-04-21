@@ -51,23 +51,24 @@ namespace Model.Authentication
         /// Register new user with login and password
         /// Also authenticate user
         /// </summary>
-        /// <param name="authData">login of the user (email) and password of the user (not encrypted)</param>
+        /// <param name="regData">login of the user (email) and password of the user (not encrypted)</param>
         /// <exception cref="AuthExceptions.RegistrationException">If something went wrong</exception>
         /// <returns>Authenticated Token</returns>
-        public static TokenData RegisterUser(AuthData authData, RootEnum rootsType)
+        public static TokenData RegisterUser(RegistrationData regData)
         {
-            if(Instance._usersAuthData.Count(n => n.Key.Equals(authData)) != 0) 
-                throw  new AuthExceptions.UserAlreadyExists(authData);
+            if(Instance._usersAuthData.Count(n => n.Key.Equals(regData)) != 0) 
+                throw  new AuthExceptions.UserAlreadyExists(regData);
 
-            AbstractUser user = UsersManager.CreateUser(rootsType); //todo factory of creating users 
-            Instance._usersAuthData.Add(authData, user);
+            AbstractUser user = UsersManager.CreateUser(regData.RootType);
+
+            Instance._usersAuthData.Add(regData, user);
             try
             {
-                return AuthUser(authData);
+                return AuthUser(regData);
             }
             catch (AuthExceptions e)
             {
-                throw new AuthExceptions.RegistrationException(authData);
+                throw new AuthExceptions.RegistrationException(regData);
             }
         }
         

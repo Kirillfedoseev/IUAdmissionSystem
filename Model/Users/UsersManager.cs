@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -21,14 +22,16 @@ namespace Model.Users
         {
             _specificUserLists = new Dictionary<Type, List<AbstractUser>>();
             LastId = 0;
+
             var subclassTypes = Assembly.GetAssembly(typeof(AbstractUser)).GetTypes().Where(t => t.IsSubclassOf(typeof(AbstractUser)) && !t.IsAbstract);
             foreach (var subclassType in subclassTypes)
             {
                 Type genericListType = typeof(List<>).MakeGenericType(subclassType);
                 Activator.CreateInstance(genericListType);
-                _specificUserLists.Add(subclassType, (List<AbstractUser>) Activator.CreateInstance(genericListType));
+                _specificUserLists.Add(subclassType, new List<AbstractUser>());
             }
         }
+
 
         public static AbstractUser CreateUser(RootEnum rootsType)
         {

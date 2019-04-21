@@ -2,12 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
 using Model.Data;
-using Model.Users;
 using System;
 using System.Net;
-
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebApp.Controllers
 {
@@ -47,7 +43,7 @@ namespace WebApp.Controllers
         {
             try
             {
-                return AuthManager.RegisterUser(data, RootEnum.Candidate);
+                return AuthManager.RegisterUser(data);
             }
             catch (AuthExceptions.RegistrationException)
             {

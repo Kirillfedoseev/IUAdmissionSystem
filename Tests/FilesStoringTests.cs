@@ -16,7 +16,8 @@ namespace Tests
             string file =
                 "jhgadflnbijsdfgnbmoisdfgbnmojsdfgbnmosfgnmodgfosfnmosfgmnosfmnoiksfgmbnoisgnhoigsdfxnmoisdrftmnoisfrmnoisfgnm[isofgnmoiksfrnmosifgtnmoiskfgnmsfr";
             #endregion
-            AbstractUser user = new TestUser(new RootEnum[0]);
+
+            var user = UsersManager.CreateUser(RootEnum.Candidate);
             FileData data = new FileData{Type = "CV", FileName = "test.txt"};
             FileManager.SubmitFile(user, data, file);
             var wrapper= FileManager.GetFileData(user, "CV");

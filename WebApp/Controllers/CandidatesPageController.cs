@@ -1,8 +1,6 @@
 ﻿ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
-using Model.Authentication;
 using Model.Data;
-using Model.Users;
 using System;
 
 namespace WebApp.Controllers
