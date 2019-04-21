@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
 using Model.Data;
@@ -15,18 +10,17 @@ namespace WebApp.Controllers
     {
 
         [HttpPost("admin/createUser")]
-        public string CreateUserByAdmin([FromBody] RegistrationData data)
+        public void CreateUserByAdmin([FromBody] RegistrationData data)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            throw new NotImplementedException();
+            //todo token validation
+            //todo root validation
+            var tokenNewUser = AuthManager.RegisterUser(data);
+            AuthManager.LogOutUser(tokenNewUser);
 
-            //????
-            //return AuthManager.RegisterUser(data, new RootEnum[] { RootEnum.None }); 
         }
-
-
 
     }
 }

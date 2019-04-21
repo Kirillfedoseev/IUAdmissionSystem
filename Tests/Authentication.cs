@@ -1,7 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Model.Authentication;
 using Model.Data;
-using Model.Users;
 
 namespace Tests
 {
@@ -13,9 +12,9 @@ namespace Tests
         public void RegistrationCompleted()
         {
 
-            AuthData authData = new AuthData("test","test");
+            RegistrationData authData = new RegistrationData("test","test");
 
-            TokenData tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
+            TokenData tokenData = AuthManager.RegisterUser(authData);
 
             var user = AuthManager.DoesUserExists(authData);
 
@@ -30,15 +29,15 @@ namespace Tests
         public void RegistrationOfExistingUser()
         {
 
-            AuthData authData = new AuthData("test1", "test1");
+            RegistrationData authData = new RegistrationData("test1", "test1");
 
-            TokenData tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
+            TokenData tokenData = AuthManager.RegisterUser(authData);
 
             try
             {
-                authData = new AuthData("test1", "test1");
+                authData = new RegistrationData("test1", "test1");
 
-                tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
+                tokenData = AuthManager.RegisterUser(authData);
                 Assert.Fail("The same user was added!");
             }
             catch (AuthExceptions.UserAlreadyExists e)
@@ -52,9 +51,9 @@ namespace Tests
         public void LogInCorrect()
         {
 
-            AuthData authData = new AuthData("test2", "test2");
+            RegistrationData authData = new RegistrationData("test2", "test2");
 
-            TokenData tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
+            TokenData tokenData = AuthManager.RegisterUser(authData);
 
             AuthManager.LogOutUser(tokenData);
 
@@ -71,9 +70,9 @@ namespace Tests
         public void LogInWithIncorrectPassword()
         {
 
-            AuthData authData = new AuthData("test3", "test3");
+            RegistrationData authData = new RegistrationData("test3", "test3");
 
-            TokenData tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
+            TokenData tokenData = AuthManager.RegisterUser(authData);
 
             AuthManager.LogOutUser(tokenData);
 
@@ -90,9 +89,9 @@ namespace Tests
         public void LogOutDone()
         {
 
-            AuthData authData = new AuthData("test4", "test4");
+            RegistrationData authData = new RegistrationData("test4", "test4");
 
-            TokenData tokenData = AuthManager.RegisterUser(authData, RootEnum.Candidate);
+            TokenData tokenData = AuthManager.RegisterUser(authData);
 
             Assert.IsTrue(AuthManager.ValidateAuthToken(tokenData));
 

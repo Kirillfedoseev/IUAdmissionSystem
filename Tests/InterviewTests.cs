@@ -13,9 +13,9 @@ namespace Tests
         public void CandidateAddedToReadyList()
         {
 
-            AuthData authData = new AuthData("test","test");
+            RegistrationData authData = new RegistrationData("test","test");
 
-            TokenData tokenData = AuthManager.RegisterUser(authData, new RootEnum[0]);
+            TokenData tokenData = AuthManager.RegisterUser(authData);
 
             var user = AuthManager.DoesUserExists(authData);
 
@@ -25,6 +25,6 @@ namespace Tests
             Assert.IsTrue(AuthManager.ValidateAuthToken(tokenData));
 
         }
-       
+
     }
 }

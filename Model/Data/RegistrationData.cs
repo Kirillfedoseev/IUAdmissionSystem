@@ -1,4 +1,4 @@
-﻿using Model.Authentication;
+﻿using Model.Users;
 
 namespace Model.Data
 {
@@ -13,6 +13,9 @@ namespace Model.Data
         public long number;
         public string citezenship;
         public string acknowledgment;
+
+        public RootEnum RootType;
+
 
         public string SerializeToJSON()
         {
@@ -35,6 +38,7 @@ namespace Model.Data
 
         public RegistrationData(string login, string password) : base(login, password)
         {
+            RootType = RootEnum.Candidate;
         }
     }
 }
