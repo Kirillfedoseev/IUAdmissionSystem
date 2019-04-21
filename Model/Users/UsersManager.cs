@@ -72,6 +72,8 @@ namespace Model.Users
         public static UserProfile GetUserProfile(TokenData authToken)
             => GetUser(authToken).Profile;
 
+        public static UserProfile GetUserProfile(int id)
+            => GetUser(id).Profile;
 
         public static void SetUserProfile(TokenData authToken, UserProfile profile)
             => GetUser(authToken).Profile = profile;
@@ -94,17 +96,17 @@ namespace Model.Users
                     InterviewManager.AddCandidateToInterviewQueue(data.CandidateId);
                     break;
                 case AdmissionStatus.Passed:
-                    user.Status = AdmissionStatus.Registered;
+                    user.Status = AdmissionStatus.Passed;
                     break;
                 case AdmissionStatus.Rejected:
-                    user.Status = AdmissionStatus.Registered;
+                    user.Status = AdmissionStatus.Rejected;
                     break;
             }
 
         }
 
 
-        private static AbstractUser GetUser(TokenData authToken)
+        public static AbstractUser GetUser(TokenData authToken)
             => AuthManager.Instance[authToken];
 
 

@@ -30,14 +30,10 @@ namespace WebApp.Controllers
                 return;
             }
 
-
-            //todo root validation
-
-
             UsersManager.SetUserProfile(token, data);
         }
 
-
+        
         [HttpGet("dashboard/profile")]
         public UserProfile GetProfile()
         {
@@ -51,15 +47,13 @@ namespace WebApp.Controllers
                 return new UserProfile();
             }
 
-            //todo root validation
             return UsersManager.GetUserProfile(token);
 
         }
 
 
         [HttpPost("manager/candidateStatus")]
-
-        public void SetCandidateStatus([FromBody] StatusUpdateData status) //TODO: Change to CanditateStatus Data
+        public void SetCandidateStatus([FromBody] StatusUpdateData status) 
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -69,12 +63,13 @@ namespace WebApp.Controllers
                 return;
             }
 
-            //todo root validation
-
-            UsersManager.SetUserStatus(status);
-
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Manager))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return;
+            }
             
-
+            UsersManager.SetUserStatus(status);
         }
 
     }

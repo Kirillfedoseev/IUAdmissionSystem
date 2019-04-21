@@ -1,17 +1,16 @@
-﻿using Model.Interviews;
+﻿using Model.Users;
 
 namespace Model.Data
 {
-    public class GradeInfoData:IData
+    public class StatusUpdateData : IData
     {
-
-        public int CandidateID; 
-
-        public InterviewManager.InterviewStatus Grade;
-
         public string Type { get; }
-
         public string Data { get; }
+
+        public int CandidateId { get; set; }
+
+        public CandidateUser.AdmissionStatus Status { get; set; }
+
 
 
         public string SerializeToJSON()
@@ -23,6 +22,5 @@ namespace Model.Data
         {
             throw new System.NotImplementedException();
         }
-
     }
 }

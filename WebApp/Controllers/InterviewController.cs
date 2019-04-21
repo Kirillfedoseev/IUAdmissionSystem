@@ -20,17 +20,24 @@ namespace WebApp.Controllers
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-              if (!AuthManager.ValidateAuthToken(token))
+            if (!AuthManager.ValidateAuthToken(token))
             {
                 Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
                 return null;
             }
-            var interviewer = AuthManager.Instance[token];
-            return InterviewManager.GetCandidateUserList(interviewer.Id);
+
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Interviewer))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return null;
+            }
+
+           
+            return InterviewManager.GetCandidateUserList(UsersManager.GetUser(token).Id);
         }
 
         [HttpPost("interviewer/updateGrade")]
-        public void UpdateGrade([FromBody] GradeInfoData data) 
+        public void UpdateGrade([FromBody] GradeInfoData data)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString); //todo check token 
@@ -39,26 +46,17 @@ namespace WebApp.Controllers
                 Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
                 return;
             }
-
-            InterviewManager.InterviewStatus status;
-            switch (data.Grade)
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Interviewer))
             {
-                case "Passed":
-                    status = InterviewManager.InterviewStatus.Passed;
-                    break;
-                case "Fail":
-                    status = InterviewManager.InterviewStatus.Fail;
-                    break;
-                default:
-                    Response.StatusCode = (int)HttpStatusCode.BadRequest;
-                    throw new Exception("Wrong Grade Type. Should be Passed of Fail");
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return;
             }
-            
-            InterviewManager.SetInterviewResults(data.CandidateID, status);
+
+            InterviewManager.SetInterviewResults(data.CandidateID, data.Grade);
         }
 
         [HttpGet("manager/interview/candidates")]
-        public CandidateUser[] ShowAllCandidatesReadyForInterview() 
+        public CandidateUser[] ShowAllCandidatesReadyForInterview()
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -67,14 +65,18 @@ namespace WebApp.Controllers
                 Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
                 return null;
             }
-           
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Manager))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return null;
+            }
 
             return InterviewManager.GetCandidateUserList();
 
         }
 
         [HttpPost("manager/addInterview")]
-        public void AddInterview([FromBody] InterviewInfoData data) 
+        public void AddInterview([FromBody] InterviewInfoData data)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -83,7 +85,11 @@ namespace WebApp.Controllers
                 Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
                 return;
             }
-            
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Manager))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return;
+            }  
 
 
             InterviewManager.CreateInterview(data);
@@ -91,7 +97,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost("manager/editInterview")]
-        public void EditInterview([FromBody] InterviewInfoData data) 
+        public void EditInterview([FromBody] InterviewInfoData data)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -100,14 +106,19 @@ namespace WebApp.Controllers
                 Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
                 return;
             }
-           
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Manager))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return;
+            }
+
 
             InterviewManager.DeleteInterview(data);
             InterviewManager.CreateInterview(data);
         }
 
         [HttpPost("manager/deleteInterview")]
-        public void DeleteInterview([FromBody] InterviewInfoData data) 
+        public void DeleteInterview([FromBody] InterviewInfoData data)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -115,6 +126,11 @@ namespace WebApp.Controllers
             if (!AuthManager.ValidateAuthToken(token))
             {
                 Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return;
+            }
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Manager))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 return;
             }
 

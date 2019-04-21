@@ -16,7 +16,6 @@ namespace WebApp.Controllers
         [HttpGet("{type}")]
         public FileDataWrapper GetFile(string type)
         {
-
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 

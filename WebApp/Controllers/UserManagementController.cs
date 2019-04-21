@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
 using Model.Data;
+using Model.Users;
+using System.Net;
 
 namespace WebApp.Controllers
 {
@@ -15,8 +17,17 @@ namespace WebApp.Controllers
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
 
-            //todo token validation
-            //todo root validation
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return;
+            }
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Admin))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return;
+            }
+
             var tokenNewUser = AuthManager.RegisterUser(data);
             AuthManager.LogOutUser(tokenNewUser);
 

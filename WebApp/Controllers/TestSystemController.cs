@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
 using Model.Data;
+using Model.Users;
 
 namespace WebApp.Controllers
 {
@@ -25,8 +26,13 @@ namespace WebApp.Controllers
                 Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
                 return;
             }
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Manager))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return;
+            }
 
-            //Todo Add root check
+
             throw new NotImplementedException();
            
         }
@@ -41,6 +47,11 @@ namespace WebApp.Controllers
                 Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
                 return null;
             }
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Candidate)) //TODO: Check!
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return null;
+            }
 
             throw new NotImplementedException();
 
@@ -50,6 +61,19 @@ namespace WebApp.Controllers
         [HttpPost("test/submit")]
         public void SubmitAnswers(string data)//TODO: Change to  AnswersData
         {
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return null;
+            }
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Candidate)) //TODO: Check!
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return null;
+            }
+
             throw new NotImplementedException();
         }
 
