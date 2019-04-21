@@ -5,6 +5,7 @@ using Model.Users;
 using Model.Data;
 using Model.Files;
 using System.Net;
+using System;
 
 namespace WebApp.Controllers
 {
@@ -52,13 +53,18 @@ namespace WebApp.Controllers
                 return;
             }
 
-            //Send file stream to DB
-            //todo exceptions and token check
 
-
-            AbstractUser user = AuthManager.Instance[token];
-            FileManager.SubmitFile(user, input.Data, input.Bytes);
-            Response.StatusCode = (int)HttpStatusCode.OK;
+            try
+            {
+                AbstractUser user = AuthManager.Instance[token];
+                FileManager.SubmitFile(user, input.Data, input.Bytes);
+                Response.StatusCode = (int)HttpStatusCode.OK;
+            }
+            catch (ArgumentNullException)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return;
+            }
 
 
         }
