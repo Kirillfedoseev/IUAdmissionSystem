@@ -4,7 +4,9 @@ namespace Model.Data
 {
     public class RegistrationData : AuthData
     {
+#pragma warning disable CS0108 // "RegistrationData.Type" скрывает наследуемый член "AuthData.Type". Если скрытие было намеренным, используйте ключевое слово new.
         public string Type { get; } = typeof(RegistrationData).ToString();
+#pragma warning restore CS0108 // "RegistrationData.Type" скрывает наследуемый член "AuthData.Type". Если скрытие было намеренным, используйте ключевое слово new.
 
         public new string Data => "json";
 
@@ -17,7 +19,9 @@ namespace Model.Data
         public RootEnum RootType;
 
 
+#pragma warning disable CS0108 // "RegistrationData.SerializeToJSON()" скрывает наследуемый член "AuthData.SerializeToJSON()". Если скрытие было намеренным, используйте ключевое слово new.
         public string SerializeToJSON()
+#pragma warning restore CS0108 // "RegistrationData.SerializeToJSON()" скрывает наследуемый член "AuthData.SerializeToJSON()". Если скрытие было намеренным, используйте ключевое слово new.
         {
             //            {
             //                type:"type",

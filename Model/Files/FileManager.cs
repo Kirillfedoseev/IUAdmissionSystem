@@ -72,7 +72,9 @@ namespace Model.Files
                 SaveFile(GetFullFileName(user.Id, info.Type), byteArray);
 
             }
+#pragma warning disable CS0168 // Переменная "e" объявлена, но ни разу не использована.
             catch (Exception e)
+#pragma warning restore CS0168 // Переменная "e" объявлена, но ни разу не использована.
             {
                 throw new FileException();
             }

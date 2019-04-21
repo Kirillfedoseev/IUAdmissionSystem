@@ -66,7 +66,9 @@ namespace Model.Authentication
             {
                 return AuthUser(regData);
             }
+#pragma warning disable CS0168 // Переменная "e" объявлена, но ни разу не использована.
             catch (AuthExceptions e)
+#pragma warning restore CS0168 // Переменная "e" объявлена, но ни разу не использована.
             {
                 throw new AuthExceptions.RegistrationException(regData);
             }
@@ -100,11 +102,15 @@ namespace Model.Authentication
             {
                 return Instance._register.ValidateAuthToken(authToken) != null;
             }
+#pragma warning disable CS0168 // Переменная "e" объявлена, но ни разу не использована.
             catch (TokenExceptions.TokenDoesNotExists e)
+#pragma warning restore CS0168 // Переменная "e" объявлена, но ни разу не использована.
             {
                 return false;
             }
+#pragma warning disable CS0168 // Переменная "e" объявлена, но ни разу не использована.
             catch (TokenExceptions.TokenExpired e)
+#pragma warning restore CS0168 // Переменная "e" объявлена, но ни разу не использована.
             {
                 return false;
             }

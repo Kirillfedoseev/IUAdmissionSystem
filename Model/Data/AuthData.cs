@@ -2,7 +2,9 @@
 
 namespace Model.Data
 {
+#pragma warning disable CS0659 // "AuthData" переопределяет Object.Equals(object o), но не переопределяет Object.GetHashCode().
     public class AuthData:IData
+#pragma warning restore CS0659 // "AuthData" переопределяет Object.Equals(object o), но не переопределяет Object.GetHashCode().
     {
         
         public string Type => typeof(AuthData).ToString();
