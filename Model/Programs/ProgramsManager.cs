@@ -11,7 +11,7 @@ namespace Model.Programs
 {
     public class ProgramsManager : Singletone<ProgramsManager> 
     {
-        private List<ProgramData> _programs { get; set; }
+        public List<ProgramData> _programs { get; set; }
 
         public Dictionary<int, List<TestAssigningData>> _testAssigningToPrograms { get; set; }
 
@@ -23,6 +23,7 @@ namespace Model.Programs
             _testAssigningToPrograms = new Dictionary<int, List<TestAssigningData>>();
             _userAssigning = new Dictionary<int, UserAssigningData>();
 
+            
         }
 
         public static void CreateProgram(ProgramData data)
@@ -60,7 +61,7 @@ namespace Model.Programs
 
 
         public static TestData[] GetTests(int programId)
-            => TestsManager.GetTests(Instance._testAssigningToPrograms[programId].Select(n => n.ProgramId).ToArray());
+            => TestsManager.GetTests(Instance._testAssigningToPrograms[programId].Select(n => n.TestId).ToArray());
 
 
         public static void AssignTestToProgram(TestAssigningData data)
