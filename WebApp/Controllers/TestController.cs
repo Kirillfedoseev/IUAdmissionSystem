@@ -87,7 +87,7 @@ namespace WebApp.Controllers
             ProgramsManager.AssignTestToProgram(new TestAssigningData()
             {
                 ProgramId = ProgramsManager.Instance._programs.First().Id,
-                TestId = TestsManager.Instance.Tests.First().Id,
+                TestId = TestsManager.Instance.Tests.First().TestId,
             });
 
             token = AuthManager.AuthUser(new AuthData("user", "password"));

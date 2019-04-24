@@ -2,7 +2,7 @@
 {
     public class TestData : IData
     {
-        public int Id { get; set; }
+        public int TestId { get; set; }
 
         public string Name { get; set; }
 
@@ -10,7 +10,7 @@
 
         public struct Question
         {
-            public int Id { get; set; }
+            public int QuestionId { get; set; }
 
             public string QuestionText;
 
@@ -18,7 +18,7 @@
 
             public struct Answer 
             {
-                public int Id { get; set; }
+                public int AnswerId { get; set; }
 
                 public string AnswerText { get; set; }
 
@@ -29,16 +29,16 @@
 
         public void SetIds(int id)
         {
-            Id = id;
+            TestId = id;
 
             for (var questionId = 0; questionId < Questions.Length; questionId++)
             {
                 Question question = Questions[questionId];
-                question.Id = questionId;
+                question.QuestionId = questionId;
 
                 for (int answerId = 0; answerId < question.Answers.Length; answerId++)
                 {
-                    question.Answers[answerId].Id = answerId;
+                    question.Answers[answerId].AnswerId = answerId;
                 }
             }
         }

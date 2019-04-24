@@ -29,18 +29,18 @@ namespace Model.Tests
         }
 
         public static void DeleteTest(int id)
-            => Instance.Tests.RemoveAll(n => n.Id == id);
+            => Instance.Tests.RemoveAll(n => n.TestId == id);
 
 
         public static TestData GetTest(int id) 
-            => Instance.Tests.SingleOrDefault(n=>n.Id == id);
+            => Instance.Tests.SingleOrDefault(n=>n.TestId == id);
 
 
         public static TestData[] GetTests(int[] id)
-            => Instance.Tests.Where(n => id.Contains(n.Id)).ToArray();
+            => Instance.Tests.Where(n => id.Contains(n.TestId)).ToArray();
 
         public static bool IsTestExist(int id)
-            => Instance.Tests.SingleOrDefault(n => n.Id == id) != null;
+            => Instance.Tests.SingleOrDefault(n => n.TestId == id) != null;
 
 
         public static TestResultsData[] GetTestsResult(int candidateId)
