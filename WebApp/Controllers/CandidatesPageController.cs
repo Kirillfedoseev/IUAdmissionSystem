@@ -34,6 +34,8 @@ namespace WebApp.Controllers
             return UsersManager.GetUserProfile(candidateID);
         }
 
+        
+
         [HttpPost("manager/candidateGrade")]
         public void SubmitSolutionForCandidate(StatusUpdateData statusUpdateData)
         {

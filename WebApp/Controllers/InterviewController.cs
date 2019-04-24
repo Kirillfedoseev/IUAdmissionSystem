@@ -74,6 +74,26 @@ namespace WebApp.Controllers
 
         }
 
+        [HttpGet("manager/candidates")]
+        public CandidateUser[] ShowAllCandidates()
+        {
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return null;
+            }
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Manager))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return null;
+            }
+
+            return UsersManager.GetUsers<CandidateUser>();
+
+        }
+
         [HttpPost("manager/addInterview")]
         public void AddInterview([FromBody] InterviewInfoData data)
         {

@@ -39,9 +39,9 @@ namespace WebApp.Controllers
             }
         }
 
-        [Route("manager/getCandidateFiles")]
-        [HttpGet("{candidateId}")]
-        public FileDataWrapper[] GetCandidateFiles(int candidateId)
+        [Route("manager/getCandidateFile")]
+        [HttpGet("{candidateId}/{type}")]
+        public FileDataWrapper GetCandidateFiles(int candidateId, string type)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -61,7 +61,7 @@ namespace WebApp.Controllers
             {
                 //Read Stream and convert to String     
                 AbstractUser user = AuthManager.Instance[token];
-                return FileManager.GetFilesData(candidateId);
+                return FileManager.GetFileData(user, type);
             }
             catch (FileException)
             {
