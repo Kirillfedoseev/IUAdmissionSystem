@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Model.Users;
+using System;
 
 namespace Model.Data
 {
@@ -10,6 +11,7 @@ namespace Model.Data
         public string Data { get; }
 
         public string Token { get; set; }
+        public RootEnum UserType { get; set; }
 
         public virtual bool IsValid => false;
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
 using Model.Data;
+using Model.Users;
 using System;
 using System.Net;
 
@@ -20,7 +21,9 @@ namespace WebApp.Controllers
         {
             try
             {
-                return AuthManager.AuthUser(data);
+                var token = AuthManager.AuthUser(data);
+                token.UserType = UsersManager.GetUser(token).RootType;
+                return token;
             }
             catch (ArgumentException)
             {
@@ -44,7 +47,10 @@ namespace WebApp.Controllers
         {
             try
             {
-                return AuthManager.RegisterUser(data);
+                var token = AuthManager.RegisterUser(data);
+                UsersManager.GetUser(token).RootType = RootEnum.Candidate;
+                token.UserType = UsersManager.GetUser(token).RootType;
+                return token;
             }
             catch (AuthExceptions.RegistrationException)
             {

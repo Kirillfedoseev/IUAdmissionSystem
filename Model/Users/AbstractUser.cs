@@ -10,7 +10,7 @@ namespace Model.Users
         public UserProfile Profile { get; set; }
         
         
-        private RootEnum RootType { get; set; }
+        public RootEnum RootType { get; set; }
 
 
         public string PhotoUrl { get; set; } //todo url to photo
