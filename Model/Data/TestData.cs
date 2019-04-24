@@ -4,6 +4,8 @@
     {
         public int TestId { get; set; }
 
+
+        public int ProgramId {get; set;}
         public string Name { get; set; }
 
         public Question[] Questions { get; set; }

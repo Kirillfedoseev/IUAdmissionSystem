@@ -28,8 +28,13 @@ namespace WebApp.Controllers
                 Response.StatusCode = (int)HttpStatusCode.Forbidden;
                 return;
             }
+            
 
             TestsManager.CreateTest(testData);
+            var assigningData = new TestAssigningData();
+            assigningData.ProgramId = testData.ProgramId;
+            assigningData.TestId = testData.TestId;
+            ProgramsManager.AssignTestToProgram(assigningData);
         }
 
         [HttpGet("test/getTests")]
