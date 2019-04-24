@@ -50,8 +50,8 @@ namespace Model.Files
         }
 
 
-        public static FileData[] GetUserFilesList(int candidateId)
-            => Instance.UsersFiles.SingleOrDefault(n => n.Key.Id == candidateId).Value.ToArray();
+        public static FileData[] GetUserFilesList(int candidateId) 
+            => Instance.UsersFiles.TryGetValue(UsersManager.GetUser(candidateId), out var a) ? a.ToArray() : null;
 
 
         /// <summary>

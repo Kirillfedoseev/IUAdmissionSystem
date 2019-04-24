@@ -73,7 +73,7 @@ namespace WebApp.Controllers
 
         [Route("manager/getCandidateFilesInfo")]
         [HttpGet("{candidateId}")]
-        public FileData[] GetCandidateFilesInfo(int candidateId)
+        public CandidateInfoForManager GetCandidateFilesInfo(int candidateId)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -93,7 +93,10 @@ namespace WebApp.Controllers
             {
                 //Read Stream and convert to String     
                 AbstractUser user = AuthManager.Instance[token];
-                return FileManager.GetFilesData(candidateId).Select(n=>n.Data).ToArray();
+                CandidateInfoForManager info = new CandidateInfoForManager();
+                info.userProfile = user.Profile;
+                info.filesInfo = FileManager.GetFilesData(candidateId).Select(n => n.Data).ToArray();
+                return info;
             }
             catch (FileException)
             {
