@@ -92,6 +92,23 @@ namespace Model.Files
 
 
         /// <summary>
+        /// Get files from server file storage
+        /// </summary>
+        /// <param name="candidateId">the user id, whom files wre requested from the storage</param>
+        /// <exception cref="FileException.UserDoesntHaveFilesException"> If user doesn't have any file</exception>
+        /// <exception cref="FileException.UserDoesntHaveFileOfGivenTypeException">If file of given type doesn't exist in storage</exception>
+        /// <returns>Wrapper, which contain FileData and it's representation in string</returns>
+        public static FileDataWrapper[] GetFilesData(int candidateId)
+        {
+            var user = UsersManager.GetUser(candidateId);
+
+            if (!Instance.UsersFiles.TryGetValue(user, out var list))
+                throw new FileException.UserDoesntHaveFilesException();
+
+            return list.Select(n => GetFileData(user, n.Type)).ToArray();
+        }
+
+        /// <summary>
         /// Get file from server file storage
         /// </summary>
         /// <param name="user">the user, which request file from the storage</param>
@@ -99,7 +116,7 @@ namespace Model.Files
         /// <exception cref="FileException.UserDoesntHaveFilesException"> If user doesn't have any file</exception>
         /// <exception cref="FileException.UserDoesntHaveFileOfGivenTypeException">If file of given type doesn't exist in storage</exception>
         /// <returns>Wrapper, which contain FileData and it's representation in string</returns>
-        public static FileDataWrapper GetFileData(AbstractUser user, string type)
+            public static FileDataWrapper GetFileData(AbstractUser user, string type)
         {
             string filename = GetFullFileName(user.Id, type);
 

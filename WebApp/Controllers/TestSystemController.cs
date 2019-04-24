@@ -1,5 +1,4 @@
-﻿using System;
-using System.Net;
+﻿using System.Net;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Model.Authentication;
@@ -15,7 +14,7 @@ namespace WebApp.Controllers
     {
 
         [HttpPost("test/create")]
-        public void CreateTest(TestData testData)
+        public void CreateTest([FromBody]TestData testData)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -54,7 +53,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost("test/submit")]
-        public void SubmitAnswers(TestResultsData testResults)
+        public void SubmitAnswers([FromBody]TestResultsData testResults)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
