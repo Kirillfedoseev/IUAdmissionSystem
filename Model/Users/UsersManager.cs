@@ -121,7 +121,7 @@ namespace Model.Users
 
         public static AbstractUser[] GetUsers(int[] ids)
             => Instance._specificUserLists.Values.SelectMany(n => n).Where(i => ids.Contains(i.Id)).ToArray();
-
+         
         public static T[] GetUsers<T>() where T : AbstractUser
             => Instance._specificUserLists[typeof(T)].Cast<T>().ToArray();
 
