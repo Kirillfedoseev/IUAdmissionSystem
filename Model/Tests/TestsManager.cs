@@ -20,6 +20,7 @@ namespace Model.Tests
         {
             LastId = 0;
             Tests = new List<TestData>();
+            TestsResults = new Dictionary<int, List<TestResultsData>>();
         }
 
         public static void CreateTest(TestData data)

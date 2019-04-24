@@ -33,12 +33,11 @@
 
             for (var questionId = 0; questionId < Questions.Length; questionId++)
             {
-                Question question = Questions[questionId];
-                question.QuestionId = questionId;
+                Questions[questionId].QuestionId = questionId;
 
-                for (int answerId = 0; answerId < question.Answers.Length; answerId++)
+                for (int answerId = 0; answerId < Questions[questionId].Answers.Length; answerId++)
                 {
-                    question.Answers[answerId].AnswerId = answerId;
+                    Questions[questionId].Answers[answerId].AnswerId = answerId;
                 }
             }
         }
