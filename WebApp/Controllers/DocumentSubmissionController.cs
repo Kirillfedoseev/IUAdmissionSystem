@@ -40,7 +40,7 @@ namespace WebApp.Controllers
 
         [Route("manager/getCandidateFiles")]
         [HttpGet("{candidateId}")]
-        public FileDataWrapper[] GetCandidateFiles(int candidateId)
+        public FileData[] GetCandidateFiles(int candidateId)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -98,12 +98,7 @@ namespace WebApp.Controllers
                 return;
             }
 
-
         }
-
-
-
-
 
     }
 }
