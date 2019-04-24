@@ -33,5 +33,55 @@ namespace WebApp.Controllers
 
         }
 
+        [HttpPost("admin/createManager")]
+        public void CreateManagerByAdmin([FromBody] RegistrationData data)
+        {
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return;
+            }
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Admin))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return;
+            }
+
+
+            var tokenNewUser = AuthManager.RegisterUser(new RegistrationData(data.Login, data.Password)
+            {
+                RootType = RootEnum.Manager
+            });
+            AuthManager.LogOutUser(tokenNewUser);
+        }
+
+        [HttpPost("admin/createInterviewer")]
+        public void CreateInterviewerByAdmin([FromBody] RegistrationData data)
+        {
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return;
+            }
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Admin))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return;
+            }
+
+
+            var tokenNewUser = AuthManager.RegisterUser(new RegistrationData(data.Login, data.Password)
+            {
+                RootType = RootEnum.Interviewer
+            });
+            AuthManager.LogOutUser(tokenNewUser);
+        }
+
     }
 }
