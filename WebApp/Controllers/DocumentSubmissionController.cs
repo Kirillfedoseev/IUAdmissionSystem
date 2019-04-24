@@ -6,6 +6,7 @@ using Model.Data;
 using Model.Files;
 using System.Net;
 using System;
+using System.Linq;
 
 namespace WebApp.Controllers
 {
@@ -40,7 +41,7 @@ namespace WebApp.Controllers
 
         [Route("manager/getCandidateFiles")]
         [HttpGet("{candidateId}")]
-        public FileData[] GetCandidateFiles(int candidateId)
+        public FileDataWrapper[] GetCandidateFiles(int candidateId)
         {
             var tokenString = Request.Headers["Authorization"];
             var token = new TokenData(tokenString);
@@ -61,6 +62,38 @@ namespace WebApp.Controllers
                 //Read Stream and convert to String     
                 AbstractUser user = AuthManager.Instance[token];
                 return FileManager.GetFilesData(candidateId);
+            }
+            catch (FileException)
+            {
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return null;
+            }
+        }
+
+
+        [Route("manager/getCandidateFilesInfo")]
+        [HttpGet("{candidateId}")]
+        public FileData[] GetCandidateFilesInfo(int candidateId)
+        {
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return null;
+            }
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Manager))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return null;
+            }
+
+            try
+            {
+                //Read Stream and convert to String     
+                AbstractUser user = AuthManager.Instance[token];
+                return FileManager.GetFilesData(candidateId).Select(n=>n.Data).ToArray();
             }
             catch (FileException)
             {

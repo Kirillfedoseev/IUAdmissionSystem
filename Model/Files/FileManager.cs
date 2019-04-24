@@ -98,14 +98,14 @@ namespace Model.Files
         /// <exception cref="FileException.UserDoesntHaveFilesException"> If user doesn't have any file</exception>
         /// <exception cref="FileException.UserDoesntHaveFileOfGivenTypeException">If file of given type doesn't exist in storage</exception>
         /// <returns>Wrapper, which contain FileData and it's representation in string</returns>
-        public static FileData[] GetFilesData(int candidateId)
+        public static FileDataWrapper[] GetFilesData(int candidateId)
         {
             var user = UsersManager.GetUser(candidateId);
 
             if (!Instance.UsersFiles.TryGetValue(user, out var list))
                 throw new FileException.UserDoesntHaveFilesException();
 
-            return list.Select(n => GetFileData(user, n.Type).Data).ToArray();
+            return list.Select(n => GetFileData(user, n.Type)).ToArray();
         }
 
         /// <summary>
