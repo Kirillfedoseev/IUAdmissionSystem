@@ -17,16 +17,18 @@ namespace WebApp.Controllers
         [HttpGet("test")]
         public void Test()
         {
-            var token = AuthManager.RegisterUser(new RegistrationData("user", "password")
+            //Default Test User Creation
             {
-                RootType = RootEnum.Candidate
-            });
-
-            TestsManager.CreateTest(new TestData
-            {
-                Name = "English",
-                Questions = new TestData.Question[2]
+                var token = AuthManager.RegisterUser(new RegistrationData("user", "password")
                 {
+                    RootType = RootEnum.Candidate
+                });
+
+                TestsManager.CreateTest(new TestData
+                {
+                    Name = "English",
+                    Questions = new TestData.Question[2]
+                    {
                     new TestData.Question
                     {
                         Answers = new TestData.Question.Answer[3]
@@ -75,30 +77,63 @@ namespace WebApp.Controllers
                         QuestionText = "A or C is good letters?"
 
                     },
-                }
-            });
+                    }
+                });
 
-            ProgramsManager.CreateProgram(new Model.Programs.ProgramData()
+                ProgramsManager.CreateProgram(new Model.Programs.ProgramData()
+                {
+                    Name = "Bachelor 1st year",
+                    Course = "Bachelor",
+                });
+
+                ProgramsManager.AssignTestToProgram(new TestAssigningData()
+                {
+                    ProgramId = ProgramsManager.Instance._programs.First().Id,
+                    TestId = TestsManager.Instance.Tests.First().TestId,
+                });
+
+                token = AuthManager.AuthUser(new AuthData("user", "password"));
+
+                ProgramsManager.AssignCandidateToProgram(new UserAssigningData()
+                {
+                    CandidateId = UsersManager.GetUser(token).Id,
+                    ProgramId = ProgramsManager.Instance._programs.First().Id,
+                });
+
+                AuthManager.LogOutUser(token);
+
+            }
+
+            
+            //Admin Creation
             {
-                Name = "Bachelor 1st year",
-                Course = "Bachelor",
-            });
+                var token = AuthManager.RegisterUser(new RegistrationData("admin", "admin")
+                {
+                    RootType = RootEnum.Admin
+                });
 
-            ProgramsManager.AssignTestToProgram(new TestAssigningData()
+                AuthManager.LogOutUser(token);
+            }
+
+            //Manager Creation
             {
-                ProgramId = ProgramsManager.Instance._programs.First().Id,
-                TestId = TestsManager.Instance.Tests.First().TestId,
-            });
+                var token = AuthManager.RegisterUser(new RegistrationData("manager", "manager")
+                {
+                    RootType = RootEnum.Manager
+                });
 
-            token = AuthManager.AuthUser(new AuthData("user", "password"));
+                AuthManager.LogOutUser(token);
+            }
 
-            ProgramsManager.AssignCandidateToProgram(new UserAssigningData()
+            //Interviewer Creation
             {
-                CandidateId = UsersManager.GetUser(token).Id,
-                ProgramId = ProgramsManager.Instance._programs.First().Id,
-            });
+                var token = AuthManager.RegisterUser(new RegistrationData("interviewer", "interviewer")
+                {
+                    RootType = RootEnum.Interviewer
+                });
 
-            AuthManager.LogOutUser(token);
+                AuthManager.LogOutUser(token);
+            }
 
         }
 

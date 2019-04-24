@@ -38,6 +38,39 @@ namespace WebApp.Controllers
             }
         }
 
+        [Route("manager/getCandidateFiles")]
+        [HttpGet("{candidateId}")]
+        public FileDataWrapper[] GetCandidateFiles(int candidateId)
+        {
+            var tokenString = Request.Headers["Authorization"];
+            var token = new TokenData(tokenString);
+
+            if (!AuthManager.ValidateAuthToken(token))
+            {
+                Response.StatusCode = (int)HttpStatusCode.NetworkAuthenticationRequired;
+                return null;
+            }
+            if (!UsersManager.GetUser(token).HasRoot(RootEnum.Manager))
+            {
+                Response.StatusCode = (int)HttpStatusCode.Forbidden;
+                return null;
+            }
+
+            try
+            {
+                //Read Stream and convert to String     
+                AbstractUser user = AuthManager.Instance[token];
+                return FileManager.GetFilesData(candidateId);
+            }
+            catch (FileException)
+            {
+                Response.StatusCode = (int)HttpStatusCode.NotFound;
+                return null;
+            }
+        }
+
+
+
         [HttpPost("dashboard/photo")]
         public void UploadPhoto([FromBody] FileDataWrapper input)
         {
@@ -67,6 +100,8 @@ namespace WebApp.Controllers
 
 
         }
+
+
 
 
 
