@@ -53,6 +53,7 @@ namespace Model.Authentication
         /// </summary>
         /// <param name="regData">login of the user (email) and password of the user (not encrypted)</param>
         /// <exception cref="AuthExceptions.RegistrationException">If something went wrong</exception>
+        /// <exception cref="AuthExceptions.UserAlreadyExists">If user already exists </exception>
         /// <returns>Authenticated Token</returns>
         public static TokenData RegisterUser(RegistrationData regData)
         {

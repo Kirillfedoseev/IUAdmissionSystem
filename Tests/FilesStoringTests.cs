@@ -17,7 +17,12 @@ namespace Tests
                 "jhgadflnbijsdfgnbmoisdfgbnmojsdfgbnmosfgnmodgfosfnmosfgmnosfmnoiksfgmbnoisgnhoigsdfxnmoisdrftmnoisfrmnoisfgnm[isofgnmoiksfrnmosifgtnmoiskfgnmsfr";
             #endregion
 
-            var user = UsersManager.CreateUser(RootEnum.Candidate);
+            var user = UsersManager.CreateUser(
+                new RegistrationData("test6","test6")
+                {
+                RootType = RootEnum.Candidate
+                }
+            );
             FileData data = new FileData{Type = "CV", FileName = "test.txt"};
             FileManager.SubmitFile(user, data, file);
             var wrapper= FileManager.GetFileData(user, "CV");
