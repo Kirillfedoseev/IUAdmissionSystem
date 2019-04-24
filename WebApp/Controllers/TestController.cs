@@ -115,6 +115,26 @@ namespace WebApp.Controllers
                 AuthManager.LogOutUser(token);
             }
 
+            //Manager Creation
+            {
+                var token = AuthManager.RegisterUser(new RegistrationData("manager", "manager")
+                {
+                    RootType = RootEnum.Manager
+                });
+
+                AuthManager.LogOutUser(token);
+            }
+
+            //Interviewer Creation
+            {
+                var token = AuthManager.RegisterUser(new RegistrationData("interviewer", "interviewer")
+                {
+                    RootType = RootEnum.Interviewer
+                });
+
+                AuthManager.LogOutUser(token);
+            }
+
         }
 
 
