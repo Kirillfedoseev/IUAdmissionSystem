@@ -122,8 +122,7 @@ namespace WebApp.Controllers
 
             try
             {
-                //Read Stream and convert to String     
-                AbstractUser user = AuthManager.Instance[token];
+                var user = UsersManager.GetUser(token);
                 return FileManager.GetUserFilesList(user.Id);
                 
             }
