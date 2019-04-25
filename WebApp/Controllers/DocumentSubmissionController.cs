@@ -60,7 +60,7 @@ namespace WebApp.Controllers
             try
             {
                 //Read Stream and convert to String     
-                AbstractUser user = AuthManager.Instance[token];
+                var user = UsersManager.GetUser(candidateId);
                 return FileManager.GetFileData(user, type);
             }
             catch (FileException)
